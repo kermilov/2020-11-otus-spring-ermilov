@@ -6,7 +6,7 @@
 
     <bean id="QADao" class="ru.otus.spring.kermilov.dao.CSVQuestionDAOImpl">
     </bean>
-    <bean id="QAService" class="ru.otus.spring.kermilov.service.QAService">
+    <bean id="QAService" class="ru.otus.spring.kermilov.service.QAServiceImpl">
         <constructor-arg name="dao" ref="QADao"/>
         <constructor-arg name="csvPath" value="questions.csv"/>
     </bean>
