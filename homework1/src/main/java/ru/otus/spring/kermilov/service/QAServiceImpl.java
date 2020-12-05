@@ -18,52 +18,19 @@ public class QAServiceImpl implements QAService {
     @Override
     public void readCSVQuestions() {
         Scanner scanner = new Scanner(Main.class.getClassLoader().getResourceAsStream(csvPath));
-        int columnNumber = 1;
-        String question = "";
-        Map<String, Boolean> answers = new HashMap<String, Boolean>();
-        String answer = "";
-        Boolean right = false;
         while (scanner.hasNext()) {
-            // последняя колонка - читаем до конца строки, иначе до запятой
-            scanner.useDelimiter((columnNumber == 7) ? "\r\n" : ",");
-
-            switch (columnNumber) {
-                case 1: {
-                    question = scanner.next();
-                    if (question.isEmpty()) {
-                        throw new RuntimeException("Can't scan question");
-                    }
-                    question = question.replace("\r\n","");
-                    break;
-                }
-                case 2:
-                case 4:
-                case 6: {
-                    answer = scanner.next();
-                    if (answer.isEmpty()) {
-                        throw new RuntimeException("Can't scan answer");
-                    }
-                    break;
-                }
-                case 3:
-                case 5:
-                case 7: {
-                    right = (scanner.next().equalsIgnoreCase("1")) ? true : false;
-                    answers.put(answer, right);
-                    break;
-                }
+            // читаем всю строку, это вопрос с вариантами ответов
+            scanner.useDelimiter("\r\n");
+            // разделяем относительно запятой
+            String[] csvQuestionArray = scanner.next().split(",");
+            if (csvQuestionArray.length != 7) {
+                throw new RuntimeException("Incorrect CSVQuestion format");
             }
-
-            if (columnNumber == 7) {
-                dao.save(new CSVQuestion(question, answers));
-                columnNumber = 1;
-                question = "";
-                answers.clear();
-                answer = "";
-                right = false;
-            } else {
-                columnNumber++;
-            }
+            dao.save(new CSVQuestion(csvQuestionArray[0], new HashMap<String, Boolean>() {{
+                put(csvQuestionArray[1], (csvQuestionArray[2].equalsIgnoreCase("1")) ? true : false);
+                put(csvQuestionArray[3], (csvQuestionArray[4].equalsIgnoreCase("1")) ? true : false);
+                put(csvQuestionArray[5], (csvQuestionArray[6].equalsIgnoreCase("1")) ? true : false);
+            }}));
         }
     }
 
@@ -75,6 +42,7 @@ public class QAServiceImpl implements QAService {
         }
         csvQuestions.forEach(CSVQuestion -> {
             System.out.println(CSVQuestion.getQuestion());
+            CSVQuestion.getAnswers().forEach((answer, right) -> { System.out.println(answer);});
         });
     }
 }

@@ -9,5 +9,6 @@ import java.util.Map;
 public class CSVQuestion {
     @Getter
     private final String question;
+    @Getter
     private final Map<String, Boolean> answers;
 }
