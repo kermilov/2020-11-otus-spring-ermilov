@@ -1,7 +1,7 @@
 package ru.otus.spring.kermilov.service;
 
 public interface QAService {
-    boolean readCSVQuestions();
+    void readCSVQuestions();
 
-    boolean printCSVQuestions();
+    void printCSVQuestions();
 }

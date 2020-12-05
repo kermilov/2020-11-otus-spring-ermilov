@@ -12,8 +12,10 @@ public class CSVQuestionDAOImpl implements CSVQuestionDAO {
     }
 
     @Override
-    public boolean save(CSVQuestion CSVQuestion) {
-        return list.add(CSVQuestion);
+    public void save(CSVQuestion CSVQuestion) {
+        if (!list.add(CSVQuestion)){
+            throw new RuntimeException("Can't save CSVQuestion");
+        }
     }
 
     @Override

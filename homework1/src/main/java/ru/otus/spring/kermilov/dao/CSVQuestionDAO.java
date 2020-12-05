@@ -5,7 +5,7 @@ import ru.otus.spring.kermilov.domain.CSVQuestion;
 import java.util.ArrayList;
 
 public interface CSVQuestionDAO {
-    boolean save(CSVQuestion CSVQuestion);
+    void save(CSVQuestion CSVQuestion);
 
     ArrayList<CSVQuestion> findAll();
 }

@@ -16,7 +16,7 @@ public class QAServiceImpl implements QAService {
     private final String csvPath;
 
     @Override
-    public boolean readCSVQuestions() {
+    public void readCSVQuestions() {
         Scanner scanner = new Scanner(Main.class.getClassLoader().getResourceAsStream(csvPath));
         int columnNumber = 1;
         String question = "";
@@ -31,8 +31,7 @@ public class QAServiceImpl implements QAService {
                 case 1: {
                     question = scanner.next();
                     if (question.isEmpty()) {
-                        System.out.println("Can't scan question");
-                        return false;
+                        throw new RuntimeException("Can't scan question");
                     }
                     question = question.replace("\r\n","");
                     break;
@@ -42,8 +41,7 @@ public class QAServiceImpl implements QAService {
                 case 6: {
                     answer = scanner.next();
                     if (answer.isEmpty()) {
-                        System.out.println("Can't scan answer");
-                        return false;
+                        throw new RuntimeException("Can't scan answer");
                     }
                     break;
                 }
@@ -57,10 +55,7 @@ public class QAServiceImpl implements QAService {
             }
 
             if (columnNumber == 7) {
-                if (!dao.save(new CSVQuestion(question, answers))) {
-                    System.out.println("Can't saveQA");
-                    return false;
-                }
+                dao.save(new CSVQuestion(question, answers));
                 columnNumber = 1;
                 question = "";
                 answers.clear();
@@ -70,19 +65,16 @@ public class QAServiceImpl implements QAService {
                 columnNumber++;
             }
         }
-        return true;
     }
 
     @Override
-    public boolean printCSVQuestions() {
+    public void printCSVQuestions() {
         ArrayList<CSVQuestion> csvQuestions = dao.findAll();
         if (csvQuestions.size() == 0) {
-            System.out.println("Empty question list");
-            return false;
+            throw new RuntimeException("Empty question list");
         }
         csvQuestions.forEach(CSVQuestion -> {
             System.out.println(CSVQuestion.getQuestion());
         });
-        return true;
     }
 }
