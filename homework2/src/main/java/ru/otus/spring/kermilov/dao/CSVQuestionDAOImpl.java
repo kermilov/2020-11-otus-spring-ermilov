@@ -1,6 +1,9 @@
 package ru.otus.spring.kermilov.dao;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Service;
 import ru.otus.spring.kermilov.Main;
 import ru.otus.spring.kermilov.domain.CSVQuestion;
 
@@ -8,9 +11,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-@RequiredArgsConstructor
-public class CSVQuestionDAOImpl implements CSVQuestionDAO {
+@Service
+public class CSVQuestionDAOImpl implements CSVQuestionDAO { 
     private final String csvPath;
+
+    public CSVQuestionDAOImpl(@Value("${csv.name}") String csvPath) {
+        this.csvPath = csvPath;
+    }
 
     @Override
     public ArrayList<CSVQuestion> findAll() {

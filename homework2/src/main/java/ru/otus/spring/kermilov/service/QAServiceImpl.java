@@ -1,6 +1,7 @@
 package ru.otus.spring.kermilov.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.otus.spring.kermilov.dao.CSVQuestionDAO;
 import ru.otus.spring.kermilov.domain.CSVQuestion;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+@Service
 @RequiredArgsConstructor
 public class QAServiceImpl implements QAService {
     private final CSVQuestionDAO dao;
