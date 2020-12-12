@@ -8,6 +8,6 @@ public class Main {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         QAServiceImpl service = context.getBean(QAServiceImpl.class);
-        service.printCSVQuestions();
+        service.testStudent();
     }
 }

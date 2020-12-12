@@ -7,6 +7,12 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 public class CSVQuestion {
+
+    public boolean compare(CSVQuestion q) {
+        return q.getQuestion().equals(this.question) &&
+               q.getAnswers().equals(this.answers);
+    }
+
     @Getter
     private final String question;
     @Getter
