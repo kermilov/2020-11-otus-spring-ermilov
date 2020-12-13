@@ -1,8 +1,10 @@
 package ru.otus.spring.kermilov.TestStudents.dao;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.kermilov.TestStudents.TestStudentsApplication;
+import ru.otus.spring.kermilov.TestStudents.config.AppProps;
 import ru.otus.spring.kermilov.TestStudents.domain.CSVQuestion;
 
 import java.util.ArrayList;
@@ -10,17 +12,14 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 @Service
-public class CSVQuestionDAOImpl implements CSVQuestionDAO { 
-    private final String csvPath;
-
-    public CSVQuestionDAOImpl(@Value("${csv.name}") String csvPath) {
-        this.csvPath = csvPath;
-    }
+@RequiredArgsConstructor
+public class CSVQuestionDAOImpl implements CSVQuestionDAO {
+    private final AppProps props;
 
     @Override
     public ArrayList<CSVQuestion> findAll() {
         ArrayList<CSVQuestion> list = new ArrayList<CSVQuestion>();
-        Scanner scanner = new Scanner(TestStudentsApplication.class.getClassLoader().getResourceAsStream(csvPath));
+        Scanner scanner = new Scanner(TestStudentsApplication.class.getClassLoader().getResourceAsStream(props.getCsvName()));
         while (scanner.hasNext()) {
             // читаем всю строку, это вопрос с вариантами ответов
             scanner.useDelimiter("\r\n");
