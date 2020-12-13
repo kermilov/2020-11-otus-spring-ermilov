@@ -8,6 +8,7 @@ import ru.otus.spring.kermilov.domain.CSVQuestion;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
@@ -27,8 +28,9 @@ public class QAServiceImpl implements QAService {
     }
 
     @Override
-    public void testStudent() {
+    public int testStudent() {
         ArrayList<CSVQuestion> csvQuestions = dao.findAll();
+        AtomicInteger result = new AtomicInteger();
         if (csvQuestions.size() == 0) {
             throw new RuntimeException("Empty question list");
         }
@@ -36,19 +38,22 @@ public class QAServiceImpl implements QAService {
         System.out.println("Please, introduce yourself:");
         String name = in.nextLine();
         System.out.println("Hello, " + name + "!");
-        csvQuestions.forEach(CSVQuestion -> {
-            System.out.println(CSVQuestion.getQuestion());
-            CSVQuestion.getAnswers().forEach((answer, right) -> { System.out.println(answer);});
+        csvQuestions.forEach(csvQuestion -> {
+            System.out.println(csvQuestion.getQuestion());
+            csvQuestion.getAnswers().forEach((answer, right) -> { System.out.println(answer);});
             System.out.println("Please, enter answer:");
-            CSVQuestion q = new CSVQuestion(CSVQuestion.getQuestion(), new HashMap<String, Boolean>(CSVQuestion.getAnswers()));
+            CSVQuestion q = new CSVQuestion(csvQuestion.getQuestion(), new HashMap<String, Boolean>(csvQuestion.getAnswers()));
             String a = in.nextLine();
+            String result_str = "Fail!";
             if (q.getAnswers().containsKey(a)) {
                 q.getAnswers().replace(a,true);
-                System.out.println(CSVQuestion.compare(q) ? "Good!" : "Fail!");
+                result_str = csvQuestion.compare(q) ? "Good!" : "Fail!";
             }
-            else {
-                System.out.println("Fail!");
+            if (result_str.equals("Good!")) {
+                result.getAndIncrement();
             }
+            System.out.println(result_str);
         });
+        return result.get();
     }
 }
