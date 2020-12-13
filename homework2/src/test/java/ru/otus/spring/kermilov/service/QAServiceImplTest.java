@@ -1,5 +1,6 @@
 package ru.otus.spring.kermilov.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -12,7 +13,6 @@ import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -20,72 +20,51 @@ class QAServiceImplTest {
     @Mock
     private CSVQuestionDAOImpl dao;
 
-    @Test
-    void testStudentResult0Test() {
+    @BeforeEach
+    void beforeEach() {
         given(dao.findAll()).willReturn(new ArrayList<CSVQuestion>() {{
             add(new CSVQuestionMock("1"));
             add(new CSVQuestionMock("2"));
             add(new CSVQuestionMock("3"));
         }});
-        String methodName = new Object() {}
+    }
+
+    void testStudentTest(String input, int expected_result) {
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        assertThat(new QAServiceImpl(dao).testStudent()).isEqualTo(expected_result);
+        System.setIn(System.in);
+    }
+
+    @Test
+    void testStudentResult0Test() {
+        testStudentTest(new Object() {}
                 .getClass()
                 .getEnclosingMethod()
-                .getName();
-        ByteArrayInputStream in = new ByteArrayInputStream((methodName + "\n"
+                .getName() + "\n"
                 +"Answer21\n"
                 +"Answer11\n"
-                +"Answer31\n")
-                .getBytes());
-        System.setIn(in);
-        QAServiceImpl service = new QAServiceImpl(dao);
-        int result = service.testStudent();
-        assertThat(result).isEqualTo(0);
-        System.setIn(System.in);
+                +"Answer31\n", 0);
     }
 
     @Test
     void testStudentResult1Test() {
-        given(dao.findAll()).willReturn(new ArrayList<CSVQuestion>() {{
-            add(new CSVQuestionMock("1"));
-            add(new CSVQuestionMock("2"));
-            add(new CSVQuestionMock("3"));
-        }});
-        String methodName = new Object() {}
+        testStudentTest(new Object() {}
                 .getClass()
                 .getEnclosingMethod()
-                .getName();
-        ByteArrayInputStream in = new ByteArrayInputStream((methodName + "\n"
+                .getName() + "\n"
                 +"Answer2\n"
                 +"Answer1\n"
-                +"Answer3\n")
-                .getBytes());
-        System.setIn(in);
-        QAServiceImpl service = new QAServiceImpl(dao);
-        int result = service.testStudent();
-        assertThat(result).isEqualTo(1);
-        System.setIn(System.in);
+                +"Answer3\n", 1);
     }
 
     @Test
     void testStudentResult3Test() {
-        given(dao.findAll()).willReturn(new ArrayList<CSVQuestion>() {{
-            add(new CSVQuestionMock("1"));
-            add(new CSVQuestionMock("2"));
-            add(new CSVQuestionMock("3"));
-        }});
-        String methodName = new Object() {}
+        testStudentTest(new Object() {}
                 .getClass()
                 .getEnclosingMethod()
-                .getName();
-        ByteArrayInputStream in = new ByteArrayInputStream((methodName + "\n"
+                .getName() + "\n"
                 +"Answer1\n"
                 +"Answer2\n"
-                +"Answer3\n")
-                .getBytes());
-        System.setIn(in);
-        QAServiceImpl service = new QAServiceImpl(dao);
-        int result = service.testStudent();
-        assertThat(result).isEqualTo(3);
-        System.setIn(System.in);
+                +"Answer3\n", 3);
     }
 }
