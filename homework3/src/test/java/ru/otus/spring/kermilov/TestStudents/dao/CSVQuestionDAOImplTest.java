@@ -7,12 +7,19 @@ import ru.otus.spring.kermilov.TestStudents.config.AppProps;
 import ru.otus.spring.kermilov.TestStudents.domain.CSVQuestion;
 
 import java.util.ArrayList;
+import java.util.Locale;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Класс DAO")
 class CSVQuestionDAOImplTest {
     private final AppProps props = new AppProps();
+
+    @BeforeEach
+    void beforeEach () {
+        props.setLocale(new Locale(""));
+    }
 
     @DisplayName("корректно реагирует на пустой файл")
     @Test
