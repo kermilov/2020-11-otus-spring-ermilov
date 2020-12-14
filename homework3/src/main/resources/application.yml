@@ -1,2 +1,3 @@
 application:
-  csvName: "questions.csv"
+  csvName: "questions_@locale.csv"
+  locale: ru_RU

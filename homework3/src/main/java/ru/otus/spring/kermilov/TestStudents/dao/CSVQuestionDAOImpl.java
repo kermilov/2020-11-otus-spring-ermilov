@@ -19,7 +19,7 @@ public class CSVQuestionDAOImpl implements CSVQuestionDAO {
     @Override
     public ArrayList<CSVQuestion> findAll() {
         ArrayList<CSVQuestion> list = new ArrayList<CSVQuestion>();
-        Scanner scanner = new Scanner(TestStudentsApplication.class.getClassLoader().getResourceAsStream(props.getCsvName()));
+        Scanner scanner = new Scanner(TestStudentsApplication.class.getClassLoader().getResourceAsStream(props.getCsvName().replaceFirst("@locale",props.getLocale().toString())));
         while (scanner.hasNext()) {
             // читаем всю строку, это вопрос с вариантами ответов
             scanner.useDelimiter("\r\n");

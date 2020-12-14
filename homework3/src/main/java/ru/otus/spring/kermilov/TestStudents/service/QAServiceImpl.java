@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RequiredArgsConstructor
 public class QAServiceImpl implements QAService {
     private final CSVQuestionDAO dao;
+    private final LocalPrintService lps;
 
     @Override
     public void printCSVQuestions() {
@@ -22,8 +23,8 @@ public class QAServiceImpl implements QAService {
             throw new RuntimeException("Empty question list");
         }
         csvQuestions.forEach(CSVQuestion -> {
-            System.out.println(CSVQuestion.getQuestion());
-            CSVQuestion.getAnswers().forEach((answer, right) -> { System.out.println(answer);});
+            lps.localPrint(CSVQuestion.getQuestion());
+            CSVQuestion.getAnswers().forEach((answer, right) -> { lps.localPrint(answer);});
         });
     }
 
@@ -35,24 +36,24 @@ public class QAServiceImpl implements QAService {
             throw new RuntimeException("Empty question list");
         }
         Scanner in = new Scanner(System.in);
-        System.out.println("Please, introduce yourself:");
+        lps.localPrint("please.introduce.yourself");
         String name = in.nextLine();
-        System.out.println("Hello, " + name + "!");
+        lps.localPrint("hello.user",new String[]{name});
         csvQuestions.forEach(csvQuestion -> {
             System.out.println(csvQuestion.getQuestion());
             csvQuestion.getAnswers().forEach((answer, right) -> { System.out.println(answer);});
-            System.out.println("Please, enter answer:");
+            lps.localPrint("please.enter.answer");
             CSVQuestion q = new CSVQuestion(csvQuestion.getQuestion(), new HashMap<String, Boolean>(csvQuestion.getAnswers()));
             String a = in.nextLine();
-            String result_str = "Fail!";
+            String result_str = "fail";
             if (q.getAnswers().containsKey(a)) {
                 q.getAnswers().replace(a,true);
-                result_str = csvQuestion.compare(q) ? "Good!" : "Fail!";
+                result_str = csvQuestion.compare(q) ? "good" : "fail";
             }
-            if (result_str.equals("Good!")) {
+            if (result_str.equals("good")) {
                 result.getAndIncrement();
             }
-            System.out.println(result_str);
+            lps.localPrint(result_str);
         });
         return result.get();
     }

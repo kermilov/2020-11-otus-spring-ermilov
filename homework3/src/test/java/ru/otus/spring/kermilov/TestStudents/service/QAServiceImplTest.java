@@ -21,6 +21,8 @@ import static org.mockito.BDDMockito.given;
 class QAServiceImplTest {
     @Mock
     private CSVQuestionDAOImpl dao;
+    @Mock
+    private LocalPrintService lps;
 
     @BeforeEach
     void beforeEach() {
@@ -33,7 +35,7 @@ class QAServiceImplTest {
 
     void testStudentTest(String input, int expected_result) {
         System.setIn(new ByteArrayInputStream(input.getBytes()));
-        assertThat(new QAServiceImpl(dao).testStudent()).isEqualTo(expected_result);
+        assertThat(new QAServiceImpl(dao,lps).testStudent()).isEqualTo(expected_result);
         System.setIn(System.in);
     }
 
