@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.spring.kermilov.TestStudents.config.AppProps;
 import ru.otus.spring.kermilov.TestStudents.domain.CSVQuestion;
+import ru.otus.spring.kermilov.TestStudents.mock.CSVQuestionMock;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -38,12 +39,15 @@ class CSVQuestionDAOImplTest {
         assertThrows(RuntimeException.class, () -> {dao.findAll();});
     }
 
-    @DisplayName("корректно реагирует на неверный формат файла с вопросами")
+    @DisplayName("корректно реагирует на верный формат файла с вопросами")
     @Test
     void findAllCorrectTest() {
         props.setCsvName("correctTest.csv");
-        CSVQuestionDAOImpl dao = new CSVQuestionDAOImpl(props);
-        ArrayList<CSVQuestion> list = dao.findAll();
-        assertThat(list.size()).isEqualTo(2);
+        ArrayList<CSVQuestion> expectedList = new ArrayList<CSVQuestion>() {{
+            add((CSVQuestion) new CSVQuestionMock("1",3));
+            add((CSVQuestion) new CSVQuestionMock("2",5));
+        }};
+        ArrayList<CSVQuestion> findList = new CSVQuestionDAOImpl(props).findAll();
+        assertThat(expectedList).isEqualTo(findList);
     }
 }
