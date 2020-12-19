@@ -52,9 +52,9 @@ class QAServiceImplTest {
                 .getClass()
                 .getEnclosingMethod()
                 .getName() + "\n"
-                +"Answer2\n"
-                +"Answer1\n"
-                +"Answer3\n", 1);
+                +"Answer 1-2\n"
+                +"Answer 2-1\n"
+                +"Answer 3-3\n", 1);
     }
 
     @Test
@@ -63,8 +63,8 @@ class QAServiceImplTest {
                 .getClass()
                 .getEnclosingMethod()
                 .getName() + "\n"
-                +"Answer1\n"
-                +"Answer2\n"
-                +"Answer3\n", 3);
+                +"Answer 1-1\n"
+                +"Answer 2-2\n"
+                +"Answer 3-3\n", 3);
     }
 }

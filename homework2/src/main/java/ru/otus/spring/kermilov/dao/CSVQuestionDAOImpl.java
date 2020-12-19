@@ -1,8 +1,6 @@
 package ru.otus.spring.kermilov.dao;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.kermilov.Main;
 import ru.otus.spring.kermilov.domain.CSVQuestion;
@@ -28,14 +26,15 @@ public class CSVQuestionDAOImpl implements CSVQuestionDAO {
             scanner.useDelimiter("\r\n");
             // разделяем относительно запятой
             String[] csvQuestionArray = scanner.next().split(",");
-            if (csvQuestionArray.length != 7) {
+            int len = csvQuestionArray.length;
+            if (len == 1 || len % 2 == 0) {
                 throw new RuntimeException("Incorrect CSVQuestion format");
             }
-            list.add(new CSVQuestion(csvQuestionArray[0], new HashMap<String, Boolean>() {{
-                put(csvQuestionArray[1], (csvQuestionArray[2].equalsIgnoreCase("1")) ? true : false);
-                put(csvQuestionArray[3], (csvQuestionArray[4].equalsIgnoreCase("1")) ? true : false);
-                put(csvQuestionArray[5], (csvQuestionArray[6].equalsIgnoreCase("1")) ? true : false);
-            }}));
+            HashMap<String, Boolean> answers = new HashMap<String, Boolean>();
+            for (int i = 1; i < len; i+=2) {
+                answers.put(csvQuestionArray[i], (csvQuestionArray[i+1].equalsIgnoreCase("1")) ? true : false);
+            }
+            list.add(new CSVQuestion(csvQuestionArray[0], answers));
         }
         return list;
     }

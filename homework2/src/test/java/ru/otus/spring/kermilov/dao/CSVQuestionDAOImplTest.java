@@ -3,6 +3,7 @@ package ru.otus.spring.kermilov.dao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.spring.kermilov.domain.CSVQuestion;
+import ru.otus.spring.kermilov.mock.CSVQuestionMock;
 
 import java.util.ArrayList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,11 +27,14 @@ class CSVQuestionDAOImplTest {
         assertThrows(RuntimeException.class, () -> {dao.findAll();});
     }
 
-    @DisplayName("корректно реагирует на неверный формат файла с вопросами")
+    @DisplayName("корректно реагирует на верный формат файла с вопросами")
     @Test
     void findAllCorrectTest() {
-        CSVQuestionDAOImpl dao = new CSVQuestionDAOImpl("correctTest.csv");
-        ArrayList<CSVQuestion> list = dao.findAll();
-        assertThat(list.size()).isEqualTo(2);
+        ArrayList<CSVQuestion> expectedList = new ArrayList<CSVQuestion>() {{
+            add(new CSVQuestionMock("1",3));
+            add(new CSVQuestionMock("2",5));
+        }};
+        ArrayList<CSVQuestion> findList = new CSVQuestionDAOImpl("correctTest.csv").findAll();
+        assertThat(expectedList).isEqualTo(findList);
     }
 }
