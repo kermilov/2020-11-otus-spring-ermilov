@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.kermilov.TestStudents.TestStudentsApplication;
 import ru.otus.spring.kermilov.TestStudents.config.AppProps;
-import ru.otus.spring.kermilov.TestStudents.domain.CSVQuestion;
+import ru.otus.spring.kermilov.TestStudents.config.ResProps;
+import ru.otus.spring.kermilov.TestStudents.domain.Question;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,13 +13,14 @@ import java.util.Scanner;
 
 @Service
 @RequiredArgsConstructor
-public class CSVQuestionDAOImpl implements CSVQuestionDAO {
-    private final AppProps props;
+public class CSVQuestionDAOImpl implements QuestionDAO {
+    private final AppProps appProps;
+    private final ResProps resProps;
 
     @Override
-    public ArrayList<CSVQuestion> findAll() {
-        ArrayList<CSVQuestion> list = new ArrayList<CSVQuestion>();
-        Scanner scanner = new Scanner(TestStudentsApplication.class.getClassLoader().getResourceAsStream(props.getCsvName().replaceFirst("@locale",props.getLocale().toString())));
+    public ArrayList<Question> findAll() {
+        ArrayList<Question> list = new ArrayList<Question>();
+        Scanner scanner = new Scanner(TestStudentsApplication.class.getClassLoader().getResourceAsStream(resProps.getCsvName().replaceFirst("@locale",appProps.getLocale().toString())));
         while (scanner.hasNext()) {
             // читаем всю строку, это вопрос с вариантами ответов
             scanner.useDelimiter("\r\n");
@@ -32,7 +34,7 @@ public class CSVQuestionDAOImpl implements CSVQuestionDAO {
             for (int i = 1; i < len; i+=2) {
                 answers.put(csvQuestionArray[i], (csvQuestionArray[i+1].equalsIgnoreCase("1")) ? true : false);
             }
-            list.add(new CSVQuestion(csvQuestionArray[0], answers));
+            list.add(new Question(csvQuestionArray[0], answers));
         }
         return list;
     }

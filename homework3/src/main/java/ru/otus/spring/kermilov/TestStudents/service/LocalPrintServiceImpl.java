@@ -7,17 +7,17 @@ import ru.otus.spring.kermilov.TestStudents.config.AppProps;
 
 @Service
 @RequiredArgsConstructor
-public class LocalPrintServiceImpl implements LocalPrintService {
+public class LocalPrintServiceImpl implements PrintService {
     private final MessageSource messageSource;
     private final AppProps props;
 
     @Override
-    public void localPrint(String s) {
+    public void print(String s) {
         System.out.println(messageSource.getMessage(s, null, props.getLocale()));
     }
 
     @Override
-    public void localPrint(String s, Object[] objects) {
+    public void print(String s, Object[] objects) {
         System.out.println(messageSource.getMessage(s, objects, props.getLocale()));
     }
 }

@@ -6,9 +6,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.Locale;
 
-@ConfigurationProperties(prefix = "application")
-public class AppProps {
+@ConfigurationProperties(prefix = "resources")
+public class ResProps {
     @Getter
     @Setter
-    Locale locale;
+    String csvName;
 }
