@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.otus.spring.kermilov.TestStudents.dao.CSVQuestionDAOImpl;
 import ru.otus.spring.kermilov.TestStudents.domain.Question;
 import ru.otus.spring.kermilov.TestStudents.mock.QuestionMock;
@@ -15,11 +18,12 @@ import java.util.ArrayList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith({SpringExtension.class})
+@SpringBootTest
 class QAServiceImplTest {
-    @Mock
+    @MockBean
     private CSVQuestionDAOImpl dao;
-    @Mock
+    @MockBean
     private PrintService lps;
 
     @BeforeEach
