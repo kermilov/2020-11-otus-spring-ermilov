@@ -11,13 +11,13 @@ import org.springframework.shell.standard.ShellOption;
 @RequiredArgsConstructor
 public class ShellCommands {
     private final QAService qa;
-    private final LocalPrintService lps;
+    private final PrintService lps;
     private String userName;
 
     @ShellMethod(value = "Login command.", key = {"l", "login"})
     public String login(@ShellOption(defaultValue = "AnyUser") String userName) {
         this.userName = userName;
-        return lps.localString("hello.user",new String[]{userName});
+        return lps.prepareToPrint("hello.user",new String[]{userName});
     }
 
     @ShellMethod(value = "Start test.", key = {"s", "start"})
@@ -27,6 +27,6 @@ public class ShellCommands {
     }
 
     private Availability isPublishEventCommandAvailable() {
-        return userName == null? Availability.unavailable(lps.localString("please.introduce.yourself")): Availability.available();
+        return userName == null? Availability.unavailable(lps.prepareToPrint("please.introduce.yourself")): Availability.available();
     }
 }

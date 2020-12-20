@@ -6,8 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.spring.kermilov.TestStudents.dao.CSVQuestionDAOImpl;
-import ru.otus.spring.kermilov.TestStudents.domain.CSVQuestion;
-import ru.otus.spring.kermilov.TestStudents.mock.CSVQuestionMock;
+import ru.otus.spring.kermilov.TestStudents.domain.Question;
+import ru.otus.spring.kermilov.TestStudents.mock.QuestionMock;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -20,14 +20,14 @@ class QAServiceImplTest {
     @Mock
     private CSVQuestionDAOImpl dao;
     @Mock
-    private LocalPrintService lps;
+    private PrintService lps;
 
     @BeforeEach
     void beforeEach() {
-        given(dao.findAll()).willReturn(new ArrayList<CSVQuestion>() {{
-            add(new CSVQuestionMock("1"));
-            add(new CSVQuestionMock("2"));
-            add(new CSVQuestionMock("3"));
+        given(dao.findAll()).willReturn(new ArrayList<Question>() {{
+            add(new QuestionMock("1"));
+            add(new QuestionMock("2"));
+            add(new QuestionMock("3"));
         }});
     }
 
