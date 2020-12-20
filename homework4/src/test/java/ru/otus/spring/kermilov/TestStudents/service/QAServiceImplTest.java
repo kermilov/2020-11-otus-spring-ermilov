@@ -39,34 +39,23 @@ class QAServiceImplTest {
 
     @Test
     void testStudentResult0Test() {
-        testStudentTest(new Object() {}
-                .getClass()
-                .getEnclosingMethod()
-                .getName() + "\n"
-                +"Answer21\n"
+        testStudentTest(
+                "Answer21\n"
                 +"Answer11\n"
                 +"Answer31\n", 0);
     }
 
     @Test
     void testStudentResult1Test() {
-        testStudentTest(new Object() {}
-                .getClass()
-                .getEnclosingMethod()
-                .getName() + "\n"
-                +"Answer2\n"
-                +"Answer1\n"
-                +"Answer3\n", 1);
+        testStudentTest("Answer 1-2\n"
+                +"Answer 2-1\n"
+                +"Answer 3-3\n", 1);
     }
 
     @Test
     void testStudentResult3Test() {
-        testStudentTest(new Object() {}
-                .getClass()
-                .getEnclosingMethod()
-                .getName() + "\n"
-                +"Answer1\n"
-                +"Answer2\n"
-                +"Answer3\n", 3);
+        testStudentTest("Answer 1-1\n"
+                +"Answer 2-2\n"
+                +"Answer 3-3\n", 3);
     }
 }
