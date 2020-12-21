@@ -13,6 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 @RequiredArgsConstructor
 public class QAServiceImpl implements QAService {
+    public static final String GOOD = "good";
+    public static final String FAIL = "fail";
     private final QuestionDAO dao;
     private final PrintService lps;
 
@@ -31,7 +33,7 @@ public class QAServiceImpl implements QAService {
         Scanner in = new Scanner(System.in);
         questions.forEach(csvQuestion -> {
             ask(csvQuestion);
-            if (verify(in, csvQuestion).equals("good")) {
+            if (verify(in, csvQuestion).equals(GOOD)) {
                 result.getAndIncrement();
             }
         });
@@ -42,10 +44,10 @@ public class QAServiceImpl implements QAService {
         lps.print("please.enter.answer");
         Question q = new Question(question.getQuestion(), new HashMap<String, Boolean>(question.getAnswers()));
         String a = in.nextLine();
-        String result_str = "fail";
+        String result_str = FAIL;
         if (q.getAnswers().containsKey(a)) {
             q.getAnswers().replace(a,true);
-            result_str = question.equals(q) ? "good" : "fail";
+            result_str = question.equals(q) ? GOOD : FAIL;
         }
         lps.print(result_str);
         return result_str;

@@ -10,5 +10,5 @@ import java.util.Locale;
 public class ResProps {
     @Getter
     @Setter
-    String csvName;
+    private String csvName;
 }
