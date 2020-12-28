@@ -45,7 +45,7 @@ class BookDaoJdbcTest {
     @Test
     void saveTestCorrect() throws Exception {
         val saveBook = dao.save(new Book(0L, "Book 1", getAuthor(1L), getGenre(1L)));
-        assertThat(saveBook).matches(Book -> Book.getId() > 0L && Book.getName() == "Book 1" &&
+        assertThat(saveBook).matches(Book -> Book.getId() > 0L && Book.getName().equals("Book 1") &&
                                      Book.getAuthor().getId() == 1L && Book.getGenre().getId() == 1L);
     }
 

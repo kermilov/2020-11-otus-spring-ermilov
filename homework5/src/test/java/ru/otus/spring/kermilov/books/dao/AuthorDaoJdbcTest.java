@@ -19,7 +19,7 @@ class AuthorDaoJdbcTest {
     @Test
     void saveTestCorrect() {
         val saveAuthor = dao.save(new Author(0L, "Author 1"));
-        assertThat(saveAuthor).matches(Author -> Author.getId() > 0L && Author.getName() == "Author 1");
+        assertThat(saveAuthor).matches(Author -> Author.getId() > 0L && Author.getName().equals("Author 1"));
     }
 
     @Test

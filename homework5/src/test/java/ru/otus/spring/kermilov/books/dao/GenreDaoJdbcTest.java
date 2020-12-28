@@ -19,7 +19,7 @@ class GenreDaoJdbcTest {
     @Test
     void saveTestCorrect() {
         val saveGenre = dao.save(new Genre(0L, "Genre 1"));
-        assertThat(saveGenre).matches(genre -> genre.getId() > 0L && genre.getName() == "Genre 1");
+        assertThat(saveGenre).matches(genre -> genre.getId() > 0L && genre.getName().equals("Genre 1"));
     }
 
     @Test
