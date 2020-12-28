@@ -8,7 +8,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import ru.otus.spring.kermilov.books.domain.Author;
 import ru.otus.spring.kermilov.books.domain.Book;
+import ru.otus.spring.kermilov.books.domain.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,23 +29,23 @@ public class BookDaoJdbc implements BookDao
 
     @Override
     public Book save(Book a) throws Exception {
-        if (authorDao.getByID(a.getAuthorID()).isEmpty()) {
-            throw new Exception("Incorrect author_id");
+        if (authorDao.getByID(a.getAuthor().getId()).isEmpty()) {
+            throw new Exception("Incorrect author");
         }
-        if (genreDao.getByID(a.getGenreID()).isEmpty()) {
-            throw new Exception("Incorrect genre_id");
+        if (genreDao.getByID(a.getGenre().getId()).isEmpty()) {
+            throw new Exception("Incorrect genre");
         }
         Optional<Book> res = getByName(a.getName());
         if (!res.isEmpty()) {
-            MapSqlParameterSource params = new MapSqlParameterSource(Map.of("id", res.get().getId(),"author_id", a.getAuthorID(), "genre_id", a.getGenreID()));
+            MapSqlParameterSource params = new MapSqlParameterSource(Map.of("id", res.get().getId(),"author_id", a.getAuthor().getId(), "genre_id", a.getGenre().getId()));
             jdbc.update("update BookS set author_id = :author_id, genre_id = :genre_id where id = :id", params);
-            return new Book(res.get().getId(), a.getName(), a.getAuthorID(), a.getGenreID());
+            return new Book(res.get().getId(), a.getName(), a.getAuthor(), a.getGenre());
         }
         else {
-            MapSqlParameterSource params = new MapSqlParameterSource(Map.of("name", a.getName(),"author_id", a.getAuthorID(), "genre_id", a.getGenreID()));
+            MapSqlParameterSource params = new MapSqlParameterSource(Map.of("name", a.getName(),"author_id", a.getAuthor().getId(), "genre_id", a.getGenre().getId()));
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbc.update("insert into BookS (name, author_id, genre_id) values (:name, :author_id, :genre_id)", params, keyHolder);
-            return new Book(keyHolder.getKey().longValue(), a.getName(), a.getAuthorID(), a.getGenreID());
+            return new Book(keyHolder.getKey().longValue(), a.getName(), a.getAuthor(), a.getGenre());
         }
     }
 
@@ -80,15 +82,15 @@ public class BookDaoJdbc implements BookDao
         return jdbc.query("select * from BookS", new BookMapper());
     }
 
-    private static class BookMapper implements RowMapper<Book> {
+    private class BookMapper implements RowMapper<Book> {
 
         @Override
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
             long id = resultSet.getLong("id");
             String name = resultSet.getString("name");
-            long author_id = resultSet.getLong("author_id");
-            long genre_id = resultSet.getLong("genre_id");
-            return new Book(id, name, author_id, genre_id);
+            Author author = authorDao.getByID(resultSet.getLong("author_id")).get();
+            Genre genre = genreDao.getByID(resultSet.getLong("genre_id")).get();
+            return new Book(id, name, author, genre);
         }
     }
 }

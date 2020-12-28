@@ -26,8 +26,8 @@ public class ShellCommands {
                          @ShellOption(help = "genreName") String genreName) {
         try {
             bookDao.save(new Book(0L, bookName,
-                    authorDao.save(new Author(0L, authorName)).getId(),
-                    genreDao.save(new Genre(0L, genreName)).getId()));
+                    authorDao.save(new Author(0L, authorName)),
+                    genreDao.save(new Genre(0L, genreName))));
         } catch (Exception e) {
             e.printStackTrace();
         }

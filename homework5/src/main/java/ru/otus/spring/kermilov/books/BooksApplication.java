@@ -13,15 +13,7 @@ import java.sql.SQLException;
 public class BooksApplication {
 
 	public static void main(String[] args) {
-		ApplicationContext context = SpringApplication.run(BooksApplication.class, args);
-		AuthorDaoJdbc dao = context.getBean(AuthorDaoJdbc.class);
-		dao.save(new Author(1L, "Author 1"));
-		//System.out.println(dao.getByID(1L).get().getName());
-		try {
-			Console.main(args);
-		} catch (SQLException throwables) {
-			throwables.printStackTrace();
-		}
+		SpringApplication.run(BooksApplication.class, args);
 	}
 
 }

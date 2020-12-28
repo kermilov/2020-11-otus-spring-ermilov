@@ -1,21 +1,16 @@
 package ru.otus.spring.kermilov.books.domain;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
+@Data
 public class Book {
     private final Long id;
     private final String name;
-    private final Long authorID;
-    private final Long genreID;
+    private final Author author;
+    private final Genre genre;
 
-    @Override
-    public String toString() {
-        return "id = " + id + " " +
-               "name = " + name + " " +
-               "authorID = " + authorID + " " +
-               "genreID = " + genreID;
-    }
 }
