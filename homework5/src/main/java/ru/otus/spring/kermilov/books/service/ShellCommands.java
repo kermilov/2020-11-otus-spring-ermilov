@@ -51,4 +51,19 @@ public class ShellCommands {
             e.printStackTrace();
         }
     }
+
+    @ShellMethod(value = "Find book.", key = {"f", "find"})
+    public void findBook(@ShellOption(help = "bookName") String bookName) {
+        try {
+            Optional<Book> optionalBook = bookDao.getByName(bookName);
+            if (!optionalBook.isEmpty()) {
+                System.out.println(optionalBook.get());
+            }
+            else {
+                System.out.println("No such book");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
