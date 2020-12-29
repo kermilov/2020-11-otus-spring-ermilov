@@ -13,6 +13,8 @@ import ru.otus.spring.kermilov.books.domain.Author;
 import ru.otus.spring.kermilov.books.domain.Book;
 import ru.otus.spring.kermilov.books.domain.Genre;
 
+import java.util.Optional;
+
 @ShellComponent
 @RequiredArgsConstructor
 public class ShellCommands {
@@ -36,5 +38,17 @@ public class ShellCommands {
     @ShellMethod(value = "List all books.", key = {"l", "list"})
     public void findAll() {
         bookDao.findAll().forEach(b -> System.out.println(b));
+    }
+
+    @ShellMethod(value = "Delete book.", key = {"d", "delete"})
+    public void deleteBook(@ShellOption(help = "bookName") String bookName) {
+        try {
+            Optional<Book> optionalBook = bookDao.getByName(bookName);
+            if (!optionalBook.isEmpty()) {
+                bookDao.deleteByID(optionalBook.get().getId());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
