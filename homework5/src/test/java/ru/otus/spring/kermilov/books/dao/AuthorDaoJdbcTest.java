@@ -17,29 +17,28 @@ class AuthorDaoJdbcTest {
     private AuthorDaoJdbc dao;
 
     @Test
-    void saveTestCorrect() {
+    void saveTestCorrect() throws Exception {
         val saveAuthor = dao.save(new Author(0L, "Author 1"));
         assertThat(saveAuthor).matches(Author -> Author.getId() > 0L && Author.getName().equals("Author 1"));
     }
 
     @Test
-    void saveAndGetTestCorrect() {
+    void saveAndGetTestCorrect() throws Exception {
         val saveAuthor = dao.save(new Author(0L, "Author 1"));
         assertThat(dao.getByID(saveAuthor.getId()).get()).usingRecursiveComparison().isEqualTo(saveAuthor);
     }
 
     @Test
-    void saveAndGetTestIncorrect() {
-        val saveAuthor1 = dao.save(new Author(0L, "Author 1"));
-        val saveAuthor2 = dao.save(new Author(saveAuthor1.getId(), "Author 2"));
-        assertThat(dao.getByID(saveAuthor2.getId()).get()).usingRecursiveComparison().isNotEqualTo(saveAuthor1);
+    void saveAndGetTestIncorrect() throws Exception {
+        val id = dao.save(new Author(0L, "Author 1")).getId();
+        val saveAuthor = dao.save(new Author(id, "Author 2"));
+        assertThat(dao.getByID(id).get().getName()).isEqualTo("Author 2");
     }
 
     @Test
-    void deleteTest() {
-        Author saveAuthor = new Author(0L, "Author 1");
-        dao.save(saveAuthor);
-        dao.deleteByID(saveAuthor.getId());
-        assertThat(dao.getByID(saveAuthor.getId()).isEmpty()).isEqualTo(true);
+    void deleteTest() throws Exception {
+        val id = dao.save(new Author(0L, "Author 1")).getId();
+        dao.deleteByID(id);
+        assertThat(dao.getByID(id).isEmpty()).isEqualTo(true);
     }
 }

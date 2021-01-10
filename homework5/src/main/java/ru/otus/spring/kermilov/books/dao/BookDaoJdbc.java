@@ -35,23 +35,30 @@ public class BookDaoJdbc implements BookDao
         if (genreDao.getByID(a.getGenre().getId()).isEmpty()) {
             throw new Exception("Incorrect genre");
         }
-        Optional<Book> res = getByName(a.getName());
-        if (!res.isEmpty()) {
-            MapSqlParameterSource params = new MapSqlParameterSource(Map.of("id", res.get().getId(),"author_id", a.getAuthor().getId(), "genre_id", a.getGenre().getId()));
-            jdbc.update("update BookS set author_id = :author_id, genre_id = :genre_id where id = :id", params);
-            return new Book(res.get().getId(), a.getName(), a.getAuthor(), a.getGenre());
+        Optional<Book> byName = getByName(a.getName());
+        Optional<Book> byID = (a.getId() > 0) ? getByID(a.getId()) : Optional.empty();
+        if (!byName.isEmpty()) {
+            if (byID.isEmpty() || byID.get().equals(byName.get())) {
+                return byName.get();
+            } else {
+                throw new Exception("Can't save cause here another Book with this name");
+            }
+        }
+        Map<String, Object> params = Map.of("id", a.getId(),"name", a.getName(), "author_id", a.getAuthor().getId(), "genre_id", a.getGenre().getId());
+        if (!byID.isEmpty()) {
+            jdbc.update("update BookS set name = :name, author_id = :author_id, genre_id = :genre_id where id = :id", params);
+            return a;
         }
         else {
-            MapSqlParameterSource params = new MapSqlParameterSource(Map.of("name", a.getName(),"author_id", a.getAuthor().getId(), "genre_id", a.getGenre().getId()));
             KeyHolder keyHolder = new GeneratedKeyHolder();
-            jdbc.update("insert into BookS (name, author_id, genre_id) values (:name, :author_id, :genre_id)", params, keyHolder);
+            jdbc.update("insert into BookS (name, author_id, genre_id) values (:name, :author_id, :genre_id)", new MapSqlParameterSource(params), keyHolder);
             return new Book(keyHolder.getKey().longValue(), a.getName(), a.getAuthor(), a.getGenre());
-        }
+        }    
     }
 
     @Override
-    public Optional<Book> getByID(Long id) {
-        Map<String, Object> params = Collections.singletonMap("id", id);
+    public Optional<Book> getByID(long id) {
+        Map<String, Long> params = Collections.singletonMap("id", id);
         try {
             return Optional.of(jdbc.queryForObject("select * from BookS where id = :id", params, new BookMapper()));
         }
@@ -72,8 +79,8 @@ public class BookDaoJdbc implements BookDao
     }
 
     @Override
-    public void deleteByID(Long id) {
-        Map<String, Object> params = Collections.singletonMap("id", id);
+    public void deleteByID(long id) {
+        Map<String, Long> params = Collections.singletonMap("id", id);
         jdbc.update("delete from BookS where id = :id", params);
     }
 

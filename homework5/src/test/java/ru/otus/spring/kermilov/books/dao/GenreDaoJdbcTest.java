@@ -17,29 +17,28 @@ class GenreDaoJdbcTest {
     private GenreDaoJdbc dao;
 
     @Test
-    void saveTestCorrect() {
+    void saveTestCorrect() throws Exception {
         val saveGenre = dao.save(new Genre(0L, "Genre 1"));
         assertThat(saveGenre).matches(genre -> genre.getId() > 0L && genre.getName().equals("Genre 1"));
     }
 
     @Test
-    void saveAndGetTestCorrect() {
+    void saveAndGetTestCorrect() throws Exception {
         val saveGenre = dao.save(new Genre(0L, "Genre 1"));
         assertThat(dao.getByID(saveGenre.getId()).get()).usingRecursiveComparison().isEqualTo(saveGenre);
     }
     
     @Test
-    void saveAndGetTestIncorrect() {
-        val saveGenre1 = dao.save(new Genre(0L, "Genre 1"));
-        val saveGenre2 = dao.save(new Genre(saveGenre1.getId(), "Genre 2"));
-        assertThat(dao.getByID(saveGenre2.getId()).get()).usingRecursiveComparison().isNotEqualTo(saveGenre1);
+    void saveAndGetTestIncorrect() throws Exception {
+        val id = dao.save(new Genre(0L, "Genre 1")).getId();
+        val saveGenre = dao.save(new Genre(id, "Genre 2"));
+        assertThat(dao.getByID(id).get().getName()).isEqualTo("Genre 2");
     }
-
+    
     @Test
-    void deleteTest() {
-        Genre saveGenre = new Genre(0L, "Genre 1");
-        dao.save(saveGenre);
-        dao.deleteByID(saveGenre.getId());
-        assertThat(dao.getByID(saveGenre.getId()).isEmpty()).isEqualTo(true);
+    void deleteTest() throws Exception {
+        val id = dao.save(new Genre(0L, "Genre 1")).getId();
+        dao.deleteByID(id);
+        assertThat(dao.getByID(id).isEmpty()).isEqualTo(true);
     }
 }

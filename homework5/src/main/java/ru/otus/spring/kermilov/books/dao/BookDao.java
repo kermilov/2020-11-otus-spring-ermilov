@@ -7,8 +7,8 @@ import java.util.Optional;
 
 public interface BookDao {
     Book save(Book a) throws Exception;
-    Optional<Book> getByID(Long id);
+    Optional<Book> getByID(long id);
     Optional<Book> getByName(String name);
-    void deleteByID(Long id);
+    void deleteByID(long id);
     List<Book> findAll();
 }

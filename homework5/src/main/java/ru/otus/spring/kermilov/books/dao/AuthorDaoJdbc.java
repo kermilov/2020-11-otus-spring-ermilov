@@ -24,22 +24,31 @@ public class AuthorDaoJdbc implements AuthorDao
     private final NamedParameterJdbcOperations jdbc;
 
     @Override
-    public Author save(Author a) {
-        Optional<Author> res = getByName(a.getName());
-        if (!res.isEmpty()) {
-            return res.get();
+    public Author save(Author a) throws Exception {
+        Optional<Author> byName = getByName(a.getName());
+        Optional<Author> byID = (a.getId() > 0) ? getByID(a.getId()) : Optional.empty();
+        if (!byName.isEmpty()) {
+            if (byID.isEmpty() || byID.get().equals(byName.get())) {
+                return byName.get();
+            } else {
+                throw new Exception("Can't save cause here another author with this name");
+            }
+        }
+        Map<String, Object> params = Map.of("id", a.getId(),"name", a.getName());
+        if (!byID.isEmpty()) {
+            jdbc.update("update AuthorS set name = :name where id = :id", params);
+            return a;
         }
         else {
-            MapSqlParameterSource params = new MapSqlParameterSource(Map.of("id", a.getId(),"name", a.getName()));
             KeyHolder keyHolder = new GeneratedKeyHolder();
-            jdbc.update("insert into AuthorS (name) values (:name)", params, keyHolder);
+            jdbc.update("insert into AuthorS (name) values (:name)", new MapSqlParameterSource(params), keyHolder);
             return new Author(keyHolder.getKey().longValue(), a.getName());
         }
     }
 
     @Override
-    public Optional<Author> getByID(Long id) {
-        Map<String, Object> params = Collections.singletonMap("id", id);
+    public Optional<Author> getByID(long id) {
+        Map<String, Long> params = Collections.singletonMap("id", id);
         try {
             return Optional.of(jdbc.queryForObject("select * from AuthorS where id = :id", params, new AuthorMapper()));
         }
@@ -60,8 +69,8 @@ public class AuthorDaoJdbc implements AuthorDao
     }
 
     @Override
-    public void deleteByID(Long id) {
-        Map<String, Object> params = Collections.singletonMap("id", id);
+    public void deleteByID(long id) {
+        Map<String, Long> params = Collections.singletonMap("id", id);
         jdbc.update("delete from AuthorS where id = :id", params);
     }
 

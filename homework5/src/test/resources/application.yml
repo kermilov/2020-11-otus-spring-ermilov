@@ -1,5 +1,8 @@
 spring:
   datasource:
     url: jdbc:h2:mem:kermilov:bookdb
-    date: test-data.sql
+    data: test-data.sql
     initialization-mode: always
+  shell:
+    interactive:
+      enabled: false

@@ -24,22 +24,31 @@ public class GenreDaoJdbc implements GenreDao
     private final NamedParameterJdbcOperations jdbc;
 
     @Override
-    public Genre save(Genre a) {
-        Optional<Genre> res = getByName(a.getName());
-        if (!res.isEmpty()) {
-            return res.get();
+    public Genre save(Genre a) throws Exception {
+        Optional<Genre> byName = getByName(a.getName());
+        Optional<Genre> byID = (a.getId() > 0) ? getByID(a.getId()) : Optional.empty();
+        if (!byName.isEmpty()) {
+            if (byID.isEmpty() || byID.get().equals(byName.get())) {
+                return byName.get();
+            } else {
+                throw new Exception("Can't save cause here another Genre with this name");
+            }
+        }
+        Map<String, Object> params = Map.of("id", a.getId(),"name", a.getName());
+        if (!byID.isEmpty()) {
+            jdbc.update("update GenreS set name = :name where id = :id", params);
+            return a;
         }
         else {
-            MapSqlParameterSource params = new MapSqlParameterSource(Map.of("id", a.getId(),"name", a.getName()));
             KeyHolder keyHolder = new GeneratedKeyHolder();
-            jdbc.update("insert into GenreS (name) values (:name)", params, keyHolder);
+            jdbc.update("insert into GenreS (name) values (:name)", new MapSqlParameterSource(params), keyHolder);
             return new Genre(keyHolder.getKey().longValue(), a.getName());
         }
     }
 
     @Override
-    public Optional<Genre> getByID(Long id) {
-        Map<String, Object> params = Collections.singletonMap("id", id);
+    public Optional<Genre> getByID(long id) {
+        Map<String, Long> params = Collections.singletonMap("id", id);
         try {
             return Optional.of(jdbc.queryForObject("select * from GenreS where id = :id", params, new GenreMapper()));
         }
@@ -60,8 +69,8 @@ public class GenreDaoJdbc implements GenreDao
     }
 
     @Override
-    public void deleteByID(Long id) {
-        Map<String, Object> params = Collections.singletonMap("id", id);
+    public void deleteByID(long id) {
+        Map<String, Long> params = Collections.singletonMap("id", id);
         jdbc.update("delete from GenreS where id = :id", params);
     }
 
