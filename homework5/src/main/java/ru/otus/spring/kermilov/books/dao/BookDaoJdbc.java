@@ -28,20 +28,12 @@ public class BookDaoJdbc implements BookDao
     private final GenreDao genreDao;
 
     @Override
-    public Book save(Book a) throws Exception {
-        if (authorDao.getByID(a.getAuthor().getId()).isEmpty()) {
-            throw new Exception("Incorrect author");
-        }
-        if (genreDao.getByID(a.getGenre().getId()).isEmpty()) {
-            throw new Exception("Incorrect genre");
-        }
+    public Book save(Book a) {
         Optional<Book> byName = getByName(a.getName());
         Optional<Book> byID = (a.getId() > 0) ? getByID(a.getId()) : Optional.empty();
         if (!byName.isEmpty()) {
             if (byID.isEmpty() || byID.get().equals(byName.get())) {
                 return byName.get();
-            } else {
-                throw new Exception("Can't save cause here another Book with this name");
             }
         }
         Map<String, Object> params = Map.of("id", a.getId(),"name", a.getName(), "author_id", a.getAuthor().getId(), "genre_id", a.getGenre().getId());

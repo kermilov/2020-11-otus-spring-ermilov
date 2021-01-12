@@ -24,14 +24,12 @@ public class AuthorDaoJdbc implements AuthorDao
     private final NamedParameterJdbcOperations jdbc;
 
     @Override
-    public Author save(Author a) throws Exception {
+    public Author save(Author a) {
         Optional<Author> byName = getByName(a.getName());
         Optional<Author> byID = (a.getId() > 0) ? getByID(a.getId()) : Optional.empty();
         if (!byName.isEmpty()) {
             if (byID.isEmpty() || byID.get().equals(byName.get())) {
                 return byName.get();
-            } else {
-                throw new Exception("Can't save cause here another author with this name");
             }
         }
         Map<String, Object> params = Map.of("id", a.getId(),"name", a.getName());

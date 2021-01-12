@@ -26,13 +26,9 @@ public class ShellCommands {
     public void saveBook(@ShellOption(help = "bookName") String bookName,
                          @ShellOption(help = "authorName") String authorName,
                          @ShellOption(help = "genreName") String genreName) {
-        try {
-            bookDao.save(new Book(0L, bookName,
-                    authorDao.save(new Author(0L, authorName)),
-                    genreDao.save(new Genre(0L, genreName))));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        bookDao.save(new Book(0L, bookName,
+                authorDao.save(new Author(0L, authorName)),
+                genreDao.save(new Genre(0L, genreName))));
     }
 
     @ShellMethod(value = "List all books.", key = {"l", "list"})

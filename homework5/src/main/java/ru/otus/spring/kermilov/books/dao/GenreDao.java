@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GenreDao {
-    Genre save(Genre a) throws Exception;
+    Genre save(Genre a);
     Optional<Genre> getByID(long id);
     Optional<Genre> getByName(String name);
     void deleteByID(long id);

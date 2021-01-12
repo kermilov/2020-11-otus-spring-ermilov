@@ -24,14 +24,12 @@ public class GenreDaoJdbc implements GenreDao
     private final NamedParameterJdbcOperations jdbc;
 
     @Override
-    public Genre save(Genre a) throws Exception {
+    public Genre save(Genre a) {
         Optional<Genre> byName = getByName(a.getName());
         Optional<Genre> byID = (a.getId() > 0) ? getByID(a.getId()) : Optional.empty();
         if (!byName.isEmpty()) {
             if (byID.isEmpty() || byID.get().equals(byName.get())) {
                 return byName.get();
-            } else {
-                throw new Exception("Can't save cause here another Genre with this name");
             }
         }
         Map<String, Object> params = Map.of("id", a.getId(),"name", a.getName());
