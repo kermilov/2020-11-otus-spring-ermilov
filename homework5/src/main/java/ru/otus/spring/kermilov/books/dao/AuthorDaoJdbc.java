@@ -48,7 +48,7 @@ public class AuthorDaoJdbc implements AuthorDao
     public Optional<Author> getByID(long id) {
         Map<String, Long> params = Collections.singletonMap("id", id);
         try {
-            return Optional.of(jdbc.queryForObject("select * from AuthorS where id = :id", params, new AuthorMapper()));
+            return Optional.of(jdbc.queryForObject("select id, name from AuthorS where id = :id", params, new AuthorMapper()));
         }
         catch (EmptyResultDataAccessException e) {
             return Optional.empty();
@@ -59,7 +59,7 @@ public class AuthorDaoJdbc implements AuthorDao
     public Optional<Author> getByName(String name) {
         Map<String, Object> params = Collections.singletonMap("name", name);
         try {
-            return Optional.of(jdbc.queryForObject("select * from AuthorS where name = :name", params, new AuthorMapper()));
+            return Optional.of(jdbc.queryForObject("select id, name from AuthorS where name = :name", params, new AuthorMapper()));
         }
         catch (EmptyResultDataAccessException e) {
             return Optional.empty();
@@ -74,7 +74,7 @@ public class AuthorDaoJdbc implements AuthorDao
 
     @Override
     public List<Author> findAll() {
-        return jdbc.query("select * from AuthorS", new AuthorMapper());
+        return jdbc.query("select id, name from AuthorS", new AuthorMapper());
     }
 
     private static class AuthorMapper implements RowMapper<Author> {

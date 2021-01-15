@@ -18,13 +18,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
 public class BookDaoJdbc implements BookDao
 {
     private final NamedParameterJdbcOperations jdbc;
-    private final AuthorDao authorDao;
     private final GenreDao genreDao;
 
     @Override
@@ -52,7 +52,7 @@ public class BookDaoJdbc implements BookDao
     public Optional<Book> getByID(long id) {
         Map<String, Long> params = Collections.singletonMap("id", id);
         try {
-            return Optional.of(jdbc.queryForObject("select * from BookS where id = :id", params, new BookMapper()));
+            return Optional.of(jdbc.queryForObject("select b.id, b.name, b.author_id, a.name as author_name, genre_id from BookS b join AuthorS a on a.id = b.author_id where b.id = :id", params, new BookMapper()));
         }
         catch (EmptyResultDataAccessException e) {
             return Optional.empty();
@@ -63,7 +63,7 @@ public class BookDaoJdbc implements BookDao
     public Optional<Book> getByName(String name) {
         Map<String, Object> params = Collections.singletonMap("name", name);
         try {
-            return Optional.of(jdbc.queryForObject("select * from BookS where name = :name", params, new BookMapper()));
+            return Optional.of(jdbc.queryForObject("select b.id, b.name, b.author_id, a.name as author_name, genre_id from BookS b join AuthorS a on a.id = b.author_id where b.name = :name", params, new BookMapper()));
         }
         catch (EmptyResultDataAccessException e) {
             return Optional.empty();
@@ -78,17 +78,19 @@ public class BookDaoJdbc implements BookDao
 
     @Override
     public List<Book> findAll() {
-        return jdbc.query("select * from BookS", new BookMapper());
+        return jdbc.query("select b.id, b.name, b.author_id, a.name as author_name, genre_id from BookS b join AuthorS a on a.id = b.author_id", new BookMapper());
     }
 
     private class BookMapper implements RowMapper<Book> {
+        private Map<Long, Genre> genreList = genreDao.findAll().stream().collect(Collectors.toMap(Genre::getId, c -> c));
 
         @Override
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
             long id = resultSet.getLong("id");
             String name = resultSet.getString("name");
-            Author author = authorDao.getByID(resultSet.getLong("author_id")).get();
-            Genre genre = genreDao.getByID(resultSet.getLong("genre_id")).get();
+            Author author = new Author(resultSet.getLong("author_id"),
+                                       resultSet.getString("author_name"));
+            Genre genre = genreList.get(resultSet.getLong("genre_id"));
             return new Book(id, name, author, genre);
         }
     }

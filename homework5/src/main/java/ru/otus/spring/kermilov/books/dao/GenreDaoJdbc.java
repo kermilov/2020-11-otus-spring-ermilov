@@ -48,7 +48,7 @@ public class GenreDaoJdbc implements GenreDao
     public Optional<Genre> getByID(long id) {
         Map<String, Long> params = Collections.singletonMap("id", id);
         try {
-            return Optional.of(jdbc.queryForObject("select * from GenreS where id = :id", params, new GenreMapper()));
+            return Optional.of(jdbc.queryForObject("select id, name from GenreS where id = :id", params, new GenreMapper()));
         }
         catch (EmptyResultDataAccessException e) {
             return Optional.empty();
@@ -59,7 +59,7 @@ public class GenreDaoJdbc implements GenreDao
     public Optional<Genre> getByName(String name) {
         Map<String, Object> params = Collections.singletonMap("name", name);
         try {
-            return Optional.of(jdbc.queryForObject("select * from GenreS where name = :name", params, new GenreMapper()));
+            return Optional.of(jdbc.queryForObject("select id, name from GenreS where name = :name", params, new GenreMapper()));
         }
         catch (EmptyResultDataAccessException e) {
             return Optional.empty();
@@ -74,7 +74,7 @@ public class GenreDaoJdbc implements GenreDao
 
     @Override
     public List<Genre> findAll() {
-        return jdbc.query("select * from GenreS", new GenreMapper());
+        return jdbc.query("select id, name from GenreS", new GenreMapper());
     }
 
     private static class GenreMapper implements RowMapper<Genre> {

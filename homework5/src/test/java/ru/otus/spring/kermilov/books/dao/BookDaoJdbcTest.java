@@ -13,6 +13,7 @@ import ru.otus.spring.kermilov.books.domain.Author;
 import ru.otus.spring.kermilov.books.domain.Book;
 import ru.otus.spring.kermilov.books.domain.Genre;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,16 +27,11 @@ class BookDaoJdbcTest {
     @Autowired
     private BookDaoJdbc dao;
     @MockBean
-    private AuthorDao authorDao;
-    @MockBean
     private GenreDao genreDao;
 
     @BeforeEach
     void beforeEach() {
-        given(authorDao.getByID(1L)).willReturn(Optional.of(getAuthor(1L)));
-        given(genreDao.getByID(1L)).willReturn(Optional.of(getGenre(1L)));
-        given(authorDao.getByID(2L)).willReturn(Optional.of(getAuthor(2L)));
-        given(genreDao.getByID(2L)).willReturn(Optional.of(getGenre(2L)));
+        given(genreDao.findAll()).willReturn(List.of(getGenre(1L), getGenre(2L)));
     }
 
     private Author getAuthor(long num) {
