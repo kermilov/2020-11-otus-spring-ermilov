@@ -52,7 +52,11 @@ public class BookDaoJdbc implements BookDao
     public Optional<Book> getByID(long id) {
         Map<String, Long> params = Collections.singletonMap("id", id);
         try {
-            return Optional.of(jdbc.queryForObject("select b.id, b.name, b.author_id, a.name as author_name, genre_id from BookS b join AuthorS a on a.id = b.author_id where b.id = :id", params, new BookMapper()));
+            return Optional.of(jdbc.queryForObject("select b.id, b.name, b.author_id, a.name as author_name, genre_id " +
+                                                          "from BookS b " +
+                                                          "join AuthorS a " +
+                                                            "on a.id = b.author_id " +
+                                                         "where b.id = :id", params, new BookMapper()));
         }
         catch (EmptyResultDataAccessException e) {
             return Optional.empty();
@@ -63,7 +67,11 @@ public class BookDaoJdbc implements BookDao
     public Optional<Book> getByName(String name) {
         Map<String, Object> params = Collections.singletonMap("name", name);
         try {
-            return Optional.of(jdbc.queryForObject("select b.id, b.name, b.author_id, a.name as author_name, genre_id from BookS b join AuthorS a on a.id = b.author_id where b.name = :name", params, new BookMapper()));
+            return Optional.of(jdbc.queryForObject("select b.id, b.name, b.author_id, a.name as author_name, genre_id " +
+                                                          "from BookS b " +
+                                                          "join AuthorS a " +
+                                                            "on a.id = b.author_id " +
+                                                         "where b.name = :name", params, new BookMapper()));
         }
         catch (EmptyResultDataAccessException e) {
             return Optional.empty();
@@ -78,7 +86,10 @@ public class BookDaoJdbc implements BookDao
 
     @Override
     public List<Book> findAll() {
-        return jdbc.query("select b.id, b.name, b.author_id, a.name as author_name, genre_id from BookS b join AuthorS a on a.id = b.author_id", new BookMapper());
+        return jdbc.query("select b.id, b.name, b.author_id, a.name as author_name, genre_id " +
+                                 "from BookS b " +
+                                 "join AuthorS a " +
+                                   "on a.id = b.author_id ", new BookMapper());
     }
 
     private class BookMapper implements RowMapper<Book> {
