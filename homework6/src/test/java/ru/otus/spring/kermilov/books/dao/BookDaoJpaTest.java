@@ -122,7 +122,7 @@ class BookDaoJpaTest {
                 //.allMatch(s -> s.getEmails() != null && s.getEmails().size() > 0)
                 ;
        //System.out.println("getPrepareStatementCount="+sessionFactory.getStatistics().getPrepareStatementCount());
-        assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(3);
+        assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(2);
 
     }
 }

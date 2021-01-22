@@ -1,7 +1,6 @@
 package ru.otus.spring.kermilov.books.domain;
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 

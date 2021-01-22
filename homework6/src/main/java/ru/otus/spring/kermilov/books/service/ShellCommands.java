@@ -2,10 +2,8 @@ package ru.otus.spring.kermilov.books.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.spring.kermilov.books.dao.AuthorDao;
 import ru.otus.spring.kermilov.books.dao.BookCommentDao;

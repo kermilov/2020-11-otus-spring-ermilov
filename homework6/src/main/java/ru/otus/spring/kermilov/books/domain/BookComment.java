@@ -3,10 +3,8 @@ package ru.otus.spring.kermilov.books.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
@@ -22,9 +20,4 @@ public class BookComment {
     Book book;
     @Column(name = "comment", nullable = false)
     String comment;
-
-    @Override
-    public String toString() {
-        return "BookComment(id=" + this.id + ", comment=" + this.comment + ")";
-    }
 }
