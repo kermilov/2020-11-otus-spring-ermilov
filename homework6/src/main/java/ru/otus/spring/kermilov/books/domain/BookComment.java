@@ -14,10 +14,10 @@ import javax.persistence.*;
 public class BookComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Стратегия генерации идентификаторов
-    long id;
-    @ManyToOne(targetEntity = Book.class)
+    private long id;
+    @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id", nullable = false)
-    Book book;
+    private Book book;
     @Column(name = "comment", nullable = false)
-    String comment;
+    private String comment;
 }
