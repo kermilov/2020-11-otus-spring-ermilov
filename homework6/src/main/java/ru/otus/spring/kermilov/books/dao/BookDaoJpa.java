@@ -17,19 +17,6 @@ public class BookDaoJpa implements BookDao
 
     @Override
     public Book save(Book a) {
-        Optional<Book> byName = getByName(a.getName());
-        Optional<Book> byID = (a.getId() > 0) ? getByID(a.getId()) : Optional.empty();
-        if (!byName.isEmpty() && !byID.isEmpty()) {
-            if (byID.get().equals(byName.get())) {
-                return byName.get();
-            } else {
-                // merge молча ничего не делает, странный, сделаю за него
-                throw new PersistenceException("Can't save cause here another Book with this name");
-            }
-        }
-        if (!byName.isEmpty()) {
-            a.setId(byName.get().getId());
-        }
         if (a.getId() > 0) {
             return em.merge(a);
         }

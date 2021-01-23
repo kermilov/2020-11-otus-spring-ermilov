@@ -1,7 +1,6 @@
 package ru.otus.spring.kermilov.books.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -15,6 +14,7 @@ import ru.otus.spring.kermilov.books.domain.BookComment;
 import ru.otus.spring.kermilov.books.domain.Genre;
 
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,18 +28,46 @@ public class ShellCommands {
     private final GenreDao genreDao;
 
     @Transactional
+    @ShellMethod(value = "Save genre.", key = {"sg", "saveGenre"})
+    public Genre saveGenre(@ShellOption(help = "genreName") String genreName) {
+        Optional<Genre> byName = genreDao.getByName(genreName);
+        if (!byName.isEmpty()) {
+            return byName.get();
+        }
+        return genreDao.save(new Genre(0L, genreName));
+    }
+
+    @Transactional
+    @ShellMethod(value = "Save author.", key = {"sa", "saveAuthor"})
+    public Author saveAuthor(@ShellOption(help = "authorName") String authorName) {
+        Optional<Author> byName = authorDao.getByName(authorName);
+        if (!byName.isEmpty()) {
+            return byName.get();
+        }
+        return authorDao.save(new Author(0L, authorName));
+    }
+
+    @Transactional
     @ShellMethod(value = "Save book.", key = {"s", "save"})
-    public void saveBook(@ShellOption(help = "bookName") String bookName,
+    public Book saveBook(@ShellOption(help = "bookName") String bookName,
                          @ShellOption(help = "authorName") String authorName,
                          @ShellOption(help = "genreNames") String genreNames) {
         List<Genre> genres = new ArrayList<Genre>();
         for (String genreName : genreNames.split(",")) {
-            genres.add(genreDao.save(new Genre(0L, genreName)));
+            genres.add(saveGenre(genreName));
         }
-        bookDao.save(new Book(0L, bookName,
-                authorDao.save(new Author(0L, authorName)),
-                genres
-        ));
+        Author author = saveAuthor(authorName);
+        Optional<Book> byName = bookDao.getByName(bookName);
+        Book b;
+        if (byName.isPresent()) {
+            b = byName.get();
+            b.setAuthor(author);
+            b.setGenres(genres);
+        }
+        else {
+            b = new Book(0L, bookName, author, genres);
+        }
+        return bookDao.save(b);
     }
 
     @Transactional(readOnly=true)

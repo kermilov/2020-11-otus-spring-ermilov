@@ -6,13 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.DuplicateKeyException;
 import ru.otus.spring.kermilov.books.domain.Author;
 
-import javax.persistence.PersistenceException;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DataJpaTest
 @Import({AuthorDaoJpa.class})
@@ -40,19 +36,6 @@ class AuthorDaoJpaTest {
         val id = dao.save(new Author(0L, "Author 1")).getId();
         val saveAuthor = dao.save(new Author(id, "Author 2"));
         assertThat(dao.getByID(id).get().getName()).isEqualTo("Author 2");
-    }
-
-    @Test
-    void saveShouldUpdateByName() {
-        val id = dao.save(new Author(0L, "Author 1")).getId();
-        assertThat(dao.save(new Author(0L, "Author 1")).getId()).isEqualTo(id);
-    }
-
-    @Test
-    void saveNotShouldUpdateExistName() {
-        val id = dao.save(new Author(0L, "Author 1")).getId();
-        dao.save(new Author(0L, "Author 2"));
-        assertThrows(PersistenceException.class, () -> {dao.save(new Author(id, "Author 2"));});
     }
 
     @Test

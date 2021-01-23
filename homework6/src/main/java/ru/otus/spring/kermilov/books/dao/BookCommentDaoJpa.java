@@ -2,20 +2,15 @@ package ru.otus.spring.kermilov.books.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ru.otus.spring.kermilov.books.domain.Author;
-import ru.otus.spring.kermilov.books.domain.Book;
 import ru.otus.spring.kermilov.books.domain.BookComment;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class BookCommentDaoJpa implements BookCommentDao{
     @PersistenceContext
     private EntityManager em;
-    @Autowired
-    private BookDao bookDao;
 
     @Override
     public BookComment save(BookComment a) {

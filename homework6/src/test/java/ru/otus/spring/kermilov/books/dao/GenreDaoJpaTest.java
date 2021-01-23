@@ -8,10 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.spring.kermilov.books.domain.Genre;
 
-import javax.persistence.PersistenceException;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DataJpaTest
 @Import({GenreDaoJpa.class})
@@ -39,19 +36,6 @@ class GenreDaoJpaTest {
         val id = dao.save(new Genre(0L, "Genre 1")).getId();
         val saveGenre = dao.save(new Genre(id, "Genre 2"));
         assertThat(dao.getByID(id).get().getName()).isEqualTo("Genre 2");
-    }
-
-    @Test
-    void saveShouldUpdateByName() {
-        val id = dao.save(new Genre(0L, "Genre 1")).getId();
-        assertThat( dao.save(new Genre(0L, "Genre 1")).getId()).isEqualTo(id);
-    }
-
-    @Test
-    void saveNotShouldUpdateExistName() {
-        val id = dao.save(new Genre(0L, "Genre 1")).getId();
-        dao.save(new Genre(0L, "Genre 2"));
-        assertThrows(PersistenceException.class, () -> {dao.save(new Genre(id, "Genre 2"));});
     }
 
     @Test

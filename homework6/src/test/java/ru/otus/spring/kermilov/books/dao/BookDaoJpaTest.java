@@ -2,16 +2,11 @@ package ru.otus.spring.kermilov.books.dao;
 
 import lombok.val;
 import org.hibernate.SessionFactory;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import ru.otus.spring.kermilov.books.domain.Author;
 import ru.otus.spring.kermilov.books.domain.Book;
 import ru.otus.spring.kermilov.books.domain.Genre;
@@ -22,7 +17,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.BDDMockito.given;
 
 @DataJpaTest
 @Import({BookDaoJpa.class})
@@ -65,21 +59,6 @@ class BookDaoJpaTest {
         val saveBook = dao.save(new Book(id, "Book 2", getAuthor(2L), getGenres(2L)));
         assertThat(saveBook).matches(Book -> Book.getId() > 0L && Book.getName() == "Book 2" &&
                 Book.getAuthor().getId() == 2L && Book.getGenres().get(0).getId() == 2L);
-    }
-
-    @Test
-    void saveShouldUpdateByName() {
-        val id = dao.save(new Book(0L, "Book 1", getAuthor(1L), getGenres(1L))).getId();
-        val saveBook = dao.save(new Book(0L, "Book 1", getAuthor(2L), getGenres(2L)));
-        assertThat(saveBook).matches(Book -> Book.getId() > 0L && Book.getName() == "Book 1" &&
-                Book.getAuthor().getId() == 2L && Book.getGenres().get(0).getId() == 2L);
-    }
-
-    @Test
-    void saveNotShouldUpdateExistName() {
-        val id = dao.save(new Book(0L, "Book 1", getAuthor(1L), getGenres(1L))).getId();
-        dao.save(new Book(0L, "Book 2", getAuthor(2L), getGenres(2L)));
-        assertThrows(PersistenceException.class, () -> {dao.save(new Book(id, "Book 2", getAuthor(2L), getGenres(2L)));});
     }
 
     @Test

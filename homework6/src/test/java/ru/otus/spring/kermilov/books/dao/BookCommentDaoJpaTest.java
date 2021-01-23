@@ -9,12 +9,9 @@ import org.springframework.context.annotation.Import;
 import ru.otus.spring.kermilov.books.domain.Book;
 import ru.otus.spring.kermilov.books.domain.BookComment;
 
-import javax.persistence.PersistenceException;
-
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DataJpaTest
 @Import({BookCommentDaoJpa.class, BookDaoJpa.class})

@@ -17,17 +17,7 @@ public class GenreDaoJpa implements GenreDao
 
     @Override
     public Genre save(Genre a) {
-        Optional<Genre> byName = getByName(a.getName());
-        Optional<Genre> byID = (a.getId() > 0) ? getByID(a.getId()) : Optional.empty();
-        if (!byName.isEmpty()) {
-            if (byID.isEmpty() || byID.get().equals(byName.get())) {
-                return byName.get();
-            } else {
-                // merge молча ничего не делает, странный, сделаю за него
-                throw new PersistenceException("Can't save cause here another Book with this name");
-            }
-        }
-        if (!byID.isEmpty()) {
+        if (a.getId() > 0) {
             return em.merge(a);
         }
         else {
