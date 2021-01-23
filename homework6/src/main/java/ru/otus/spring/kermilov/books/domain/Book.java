@@ -24,9 +24,21 @@ public class Book {
     @JoinColumn(name = "author_id", nullable = false, foreignKey = @ForeignKey(name = "fk_author_id"))
     private Author author;
     @Fetch(FetchMode.SUBSELECT)
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "book_genres", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genres;
 
+    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "book_id", insertable = false)
+    private List<BookComment> comments;
+
+    public Book(long id, String name, Author author, List<Genre> genres) {
+        super();
+        this.setId(id);
+        this.setName(name);
+        this.setAuthor(author);
+        this.setGenres(genres);
+    }
 }

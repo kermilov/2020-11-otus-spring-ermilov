@@ -1,6 +1,7 @@
 package ru.otus.spring.kermilov.books.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -117,13 +118,15 @@ public class ShellCommands {
     @Transactional(readOnly = true)
     @ShellMethod(value = "Find book comments.", key = {"fc", "findComments"})
     public void findBookComment(@ShellOption(help = "bookName") String bookName) {
-        System.out.println(bookCommentDao.getByBookID(bookDao.getByName(bookName).get().getId()));
+        System.out.println(bookDao.getByName(bookName).get().getComments());
     }
 
     @Transactional
     @ShellMethod(value = "Delete book comments.", key = {"dc", "deleteComments"})
     public void deleteBookComments(@ShellOption(help = "bookName") String bookName) {
-        bookCommentDao.deleteByBookID(bookDao.getByName(bookName).get().getId());
+        val b = bookDao.getByName(bookName).get();
+        b.getComments().clear();
+        bookDao.save(b);
     }
 
 }

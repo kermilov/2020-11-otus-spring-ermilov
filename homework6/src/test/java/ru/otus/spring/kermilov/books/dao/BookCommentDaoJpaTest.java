@@ -30,25 +30,4 @@ class BookCommentDaoJpaTest {
         val saveBookComment = dao.save(new BookComment(0L, saveBook, "BookComment 1"));
         assertThat(saveBookComment).matches(BookComment -> BookComment.getBook() == saveBook && BookComment.getComment().equals("BookComment 1"));
     }
-
-    @Test
-    void getByBookIdShouldGet() {
-        val saveBook = bookDao.save(new Book(0L, "Test Book 1", null, null));
-        val bookId = saveBook.getId();
-        val saveBookComment1 = dao.save(new BookComment(0L, saveBook, "BookComment 1"));
-        val saveBookComment2 = dao.save(new BookComment(0L, saveBook, "BookComment 2"));
-        List<BookComment> bookCommentList = dao.getByBookID(bookId);
-        assertThat(bookCommentList).isNotNull().hasSize(2);
-        assertThat(bookCommentList.get(0)).usingRecursiveComparison().isEqualTo(saveBookComment1);
-        assertThat(bookCommentList.get(1)).usingRecursiveComparison().isEqualTo(saveBookComment2);
-    }
-
-    @Test
-    void deleteShouldDelete() {
-        val saveBook = bookDao.save(new Book(0L, "Test Book 1", null, null));
-        dao.save(new BookComment(0L, saveBook, "BookComment 1"));
-        dao.save(new BookComment(0L, saveBook, "BookComment 2"));
-        dao.deleteByBookID(1L);
-        assertThat(dao.getByBookID(1L).isEmpty()).isEqualTo(true);
-    }
 }

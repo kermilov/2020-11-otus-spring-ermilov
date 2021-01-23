@@ -91,16 +91,13 @@ class BookDaoJpaTest {
 
         sessionFactory.getStatistics().setStatisticsEnabled(true);
         em.clear();
-        val students = dao.findAll();
-        System.out.println(students);
-        assertThat(students).isNotNull().hasSize(2)
+        val a = dao.findAll();
+        assertThat(a).isNotNull().hasSize(2)
                 .allMatch(s -> !s.getName().equals(""))
                 .allMatch(s -> s.getGenres() != null)
                 .allMatch(s -> s.getAuthor() != null)
-                //.allMatch(s -> s.getEmails() != null && s.getEmails().size() > 0)
                 ;
-       //System.out.println("getPrepareStatementCount="+sessionFactory.getStatistics().getPrepareStatementCount());
-        assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(2);
+        assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(1);
 
     }
 }

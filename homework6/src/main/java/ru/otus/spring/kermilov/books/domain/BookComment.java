@@ -3,6 +3,7 @@ package ru.otus.spring.kermilov.books.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -17,6 +18,7 @@ public class BookComment {
     private long id;
     @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id", nullable = false)
+    @ToString.Exclude
     private Book book;
     @Column(name = "comment", nullable = false)
     private String comment;
