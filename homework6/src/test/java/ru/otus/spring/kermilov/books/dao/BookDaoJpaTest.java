@@ -74,11 +74,10 @@ class BookDaoJpaTest {
     }
 
     @Test
-    void deleteShouldDelete() {
-        Book saveBook = new Book(0L, "Book 1", getAuthor(1L), getGenres(1L));
-        val id = dao.save(saveBook).getId();
-        dao.deleteByID(id);
-        em.clear();
+    void removeShouldDelete() {
+        Book a = dao.save(new Book(0L, "Book 1", getAuthor(1L), getGenres(1L)));
+        val id = a.getId();
+        dao.remove(a);
         assertThat(dao.getByID(id).isEmpty()).isEqualTo(true);
     }
 

@@ -49,7 +49,6 @@ class BookCommentDaoJpaTest {
         dao.save(new BookComment(0L, saveBook, "BookComment 1"));
         dao.save(new BookComment(0L, saveBook, "BookComment 2"));
         dao.deleteByBookID(1L);
-        em.clear();
         assertThat(dao.getByBookID(1L).isEmpty()).isEqualTo(true);
     }
 }

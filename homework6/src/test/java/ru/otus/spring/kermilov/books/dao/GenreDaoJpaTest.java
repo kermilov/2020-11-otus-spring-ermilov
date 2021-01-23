@@ -39,10 +39,10 @@ class GenreDaoJpaTest {
     }
 
     @Test
-    void deleteShouldDelete() {
-        val id = dao.save(new Genre(0L, "Genre 1")).getId();
-        dao.deleteByID(id);
-        em.clear();
+    void removeShouldDelete() {
+        val a = dao.save(new Genre(0L, "Genre 1"));
+        val id = a.getId();
+        dao.remove(a);
         assertThat(dao.getByID(id).isEmpty()).isEqualTo(true);
     }
 }

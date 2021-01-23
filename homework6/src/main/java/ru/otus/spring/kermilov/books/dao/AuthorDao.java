@@ -9,6 +9,6 @@ public interface AuthorDao {
     Author save(Author a);
     Optional<Author> getByID(long id);
     Optional<Author> getByName(String name);
-    void deleteByID(long id);
+    void remove(Author a);
     List<Author> findAll();
 }

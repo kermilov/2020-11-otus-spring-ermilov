@@ -39,10 +39,10 @@ class AuthorDaoJpaTest {
     }
 
     @Test
-    void deleteShouldDelete() {
-        val id = dao.save(new Author(0L, "Author 1")).getId();
-        dao.deleteByID(id);
-        em.clear();
+    void removeShouldDelete() {
+        val a = dao.save(new Author(0L, "Author 1"));
+        val id = a.getId();
+        dao.remove(a);
         assertThat(dao.getByID(id).isEmpty()).isEqualTo(true);
     }
 }

@@ -82,7 +82,7 @@ public class ShellCommands {
         try {
             Optional<Book> optionalBook = bookDao.getByName(bookName);
             if (!optionalBook.isEmpty()) {
-                bookDao.deleteByID(optionalBook.get().getId());
+                bookDao.remove(optionalBook.get());
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -47,12 +47,8 @@ public class AuthorDaoJpa implements AuthorDao
     }
 
     @Override
-    public void deleteByID(long id) {
-        Query query = em.createQuery("delete " +
-                "from Author s " +
-                "where s.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+    public void remove(Author a) {
+        em.remove(a);
     }
 
     @Override

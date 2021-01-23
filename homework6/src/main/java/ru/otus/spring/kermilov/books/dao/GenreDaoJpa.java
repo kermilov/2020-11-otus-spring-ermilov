@@ -47,12 +47,8 @@ public class GenreDaoJpa implements GenreDao
     }
 
     @Override
-    public void deleteByID(long id) {
-        Query query = em.createQuery("delete " +
-                "from Genre s " +
-                "where s.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+    public void remove(Genre a) {
+        em.remove(a);
     }
 
     @Override
