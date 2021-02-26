@@ -71,10 +71,13 @@ public class BookDtoService {
         book.setId(bookDto.getId());
         book.setName(bookDto.getName());
         book.setAuthor(saveAuthor(bookDto.getAuthor()));
-        List<Genre> genres = Arrays.stream(bookDto.getGenres().split(","))
+//        List<Genre> genres = Arrays.stream(bookDto.getGenres().split(","))
+//                .map(genreName -> saveGenre(genreName))
+//                .collect(Collectors.toList());
+        List<Genre> genresList = bookDto.getGenresList().stream()
                 .map(genreName -> saveGenre(genreName))
                 .collect(Collectors.toList());
-        book.setGenres(genres);
+        book.setGenres(genresList);
         return book;
     }
 
@@ -84,6 +87,7 @@ public class BookDtoService {
         bookDto.setName(book.getName());
         bookDto.setAuthor(book.getAuthor().getName());
         bookDto.setGenres(book.getGenres().stream().map(g -> String.valueOf(g.getName())).collect(Collectors.joining(",")));
+        bookDto.setGenresList(book.getGenres().stream().map(g -> String.valueOf(g.getName())).collect(Collectors.toList()));
         return bookDto;
     }
 

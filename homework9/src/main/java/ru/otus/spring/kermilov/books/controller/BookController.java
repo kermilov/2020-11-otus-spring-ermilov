@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.otus.spring.kermilov.books.dao.AuthorDao;
+import ru.otus.spring.kermilov.books.dao.GenreDao;
 import ru.otus.spring.kermilov.books.dto.BookDto;
 import ru.otus.spring.kermilov.books.service.BookDtoService;
 
@@ -13,6 +15,8 @@ import ru.otus.spring.kermilov.books.service.BookDtoService;
 @RequiredArgsConstructor
 public class BookController {
     private final BookDtoService bookDtoService;
+    private final AuthorDao authorDao;
+    private final GenreDao genreDao;
 
     @GetMapping("/")
     public String listPage(Model model) {
@@ -29,6 +33,8 @@ public class BookController {
     @GetMapping("/edit")
     public String editPage(@RequestParam("id") long id, Model model) {
         model.addAttribute("book", bookDtoService.findById(id));
+        model.addAttribute("authorDao", authorDao);
+        model.addAttribute("genreDao", genreDao);
         return "edit";
     }
 

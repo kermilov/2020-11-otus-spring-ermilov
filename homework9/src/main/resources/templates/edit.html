@@ -40,12 +40,21 @@
 
     <div class="row">
         <label for="author-input">Author:</label>
-        <input id="author-input" name="author" type="text" th:value="${book.author}" value="Test Author"/>
+        <select id="author-input" name="author" th:field="${book.author}" value="Test Author">
+            <option th:each="author : ${authorDao.findAll()}"
+                    th:value="${author.name}"
+                    th:text="${author.name}">Author Select</option>
+        </select>
     </div>
 
     <div class="row">
         <label for="genres-input">Genres:</label>
-        <input id="genres-input" name="genres" type="text" th:value="${book.genres}" value="Test Genres"/>
+        <ul id="genres-input" name="genres" th:value="${book.genresList}" value="Test Genres">
+            <li th:each="genre : ${genreDao.findAll()}">
+                <input type="checkbox" th:field="${book.genresList}" th:value="${genre.name}" />
+                <label th:text="${genre.name}">Test Genre</label>
+            </li>
+        </ul>
     </div>
 
     <div class="row">
