@@ -24,13 +24,15 @@ public class BookController {
         return "list";
     }
 
-    @GetMapping("/insert")
+    @GetMapping("/book/insert")
     public String insertPage(Model model) {
         model.addAttribute("book", bookDtoService.getNew());
+        model.addAttribute("authorDao", authorDao);
+        model.addAttribute("genreDao", genreDao);
         return "edit";
     }
 
-    @GetMapping("/edit")
+    @GetMapping("/book/edit")
     public String editPage(@RequestParam("id") long id, Model model) {
         model.addAttribute("book", bookDtoService.findById(id));
         model.addAttribute("authorDao", authorDao);
@@ -38,19 +40,19 @@ public class BookController {
         return "edit";
     }
 
-    @PostMapping("/edit")
+    @PostMapping("/book/edit")
     public String saveBook(BookDto bookDto, Model model) {
         bookDtoService.save(bookDto);
         return "redirect:/";
     }
 
-    @GetMapping("/delete")
+    @GetMapping("/book/delete")
     public String deletePage(@RequestParam("id") long id, Model model) {
         model.addAttribute("book", bookDtoService.findById(id));
         return "delete";
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/book/delete")
     public String deleteBook(@RequestParam("id") long id, Model model) {
         bookDtoService.deleteById(id);
         return "redirect:/";

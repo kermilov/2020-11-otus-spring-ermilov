@@ -14,7 +14,7 @@
         }
     </style>
 </head>
-<form id="table-form" th:action="@{/insert}" th:method="get" action="edit.html">
+<form id="table-form" th:action="@{/book/insert}" th:method="get" action="edit.html">
 
 <body>
 <h1>Books:</h1>
@@ -38,13 +38,13 @@
         <td th:text="${book.author}">Test Author</td>
         <td th:text="${book.genres}">Test Genre 1, Test Genre 2</td>
         <td>
-            <a th:href="@{/listcomments(id=${book.id})}" href="listcomments.html">Comments</a>
+            <a th:href="@{/comment(id=${book.id})}" href="listcomments.html">Comments</a>
         </td>
         <td>
-            <a th:href="@{/edit(id=${book.id})}" href="edit.html">Edit</a>
+            <a th:href="@{/book/edit(id=${book.id})}" href="edit.html">Edit</a>
         </td>
         <td>
-            <a th:href="@{/delete(id=${book.id})}" href="delete.html">Delete</a>
+            <a th:href="@{/book/delete(id=${book.id})}" href="delete.html">Delete</a>
         </td>
     </tr>
     </tbody>

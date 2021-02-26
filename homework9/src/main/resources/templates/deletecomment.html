@@ -25,7 +25,7 @@
 <body>
 
 <!-- Book Comment deleteion -->
-<form id="deletecomment-form" th:action="@{/deletecomment(id=${bookcomment.id})}" th:method="post" action="deletecomment.html">
+<form id="deletecomment-form" th:action="@{/comment/delete(id=${bookcomment.id})}" th:method="post" action="deletecomment.html">
     <h1>Book Comment:</h1>
 
     <div class="row">

@@ -25,7 +25,7 @@
 <body>
 
 <!-- Book Comment edition -->
-<form id="editcomment-form" th:action="@{/editcomment(id=${bookcomment.id})}" th:method="post" action="editcomment.html">
+<form id="editcomment-form" th:action="@{/comment/edit(id=${bookcomment.id})}" th:method="post" action="editcomment.html">
     <h1>Book Comment:</h1>
 
     <div class="row">

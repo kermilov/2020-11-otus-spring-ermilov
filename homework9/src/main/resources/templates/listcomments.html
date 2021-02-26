@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<form id="tablecomment-form" th:action="@{/insertcomment(id=${bookId})}" th:method="post" action="editcomment.html">
+<form id="tablecomment-form" th:action="@{/comment/insert(id=${bookId})}" th:method="post" action="editcomment.html">
 <h1 th:text="${bookName} + ' Comments:'">Book Comments:</h1>
 <table class="bookcomments">
     <thead>
@@ -32,10 +32,10 @@
         <td th:text="${bookcomment.id}">1</td>
         <td th:text="${bookcomment.comment}">Test Comment</td>
         <td>
-            <a th:href="@{/editcomment(id=${bookcomment.id})}" href="editcomment.html">Edit</a>
+            <a th:href="@{/comment/edit(id=${bookcomment.id})}" href="editcomment.html">Edit</a>
         </td>
         <td>
-            <a th:href="@{/deletecomment(id=${bookcomment.id})}" href="deletecomment.html">Delete</a>
+            <a th:href="@{/comment/delete(id=${bookcomment.id})}" href="deletecomment.html">Delete</a>
         </td>
     </tr>
     </tbody>
