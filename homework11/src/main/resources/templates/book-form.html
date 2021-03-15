@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit book</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+<!--    <link rel="icon" href="data:;base64,=">-->
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+<!-- Book form -->
+<form id="book-form">
+    <h1>Book Info:</h1>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" name="id" type="text" readonly="readonly"/>
+    </div>
+
+    <div class="row">
+        <label for="name-input">Name:</label>
+        <input id="name-input" name="name" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="author-input">Author:</label>
+        <input id="author-input" name="author" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="genres-input">Genres:</label>
+        <input id="genres-input" name="genres" type="text"/>
+    </div>
+
+    <div class="row">
+        <button id="submit-button" type="submit">Button</button>
+    </div>
+</form>
+
+<script type="text/javascript" src="/js/book-form.js"></script>
+<script>
+    $("#book-form").ready(function() {
+        fillForm('[[${bookId}]]', [[${action}]]);
+    });
+
+    $("#book-form").submit(function(event) {
+        event.preventDefault();
+        doAction([[${action}]]);
+    });
+</script>
+
+</body>
+</html>
