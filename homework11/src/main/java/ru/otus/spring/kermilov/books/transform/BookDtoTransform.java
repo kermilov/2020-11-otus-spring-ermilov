@@ -1,13 +1,8 @@
-package ru.otus.spring.kermilov.books.service;
+package ru.otus.spring.kermilov.books.transform;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import org.springframework.stereotype.Component;
 import ru.otus.spring.kermilov.books.dao.AuthorDao;
-import ru.otus.spring.kermilov.books.dao.BookCommentReactDao;
-import ru.otus.spring.kermilov.books.dao.BookReactDao;
 import ru.otus.spring.kermilov.books.dao.GenreDao;
 import ru.otus.spring.kermilov.books.domain.Author;
 import ru.otus.spring.kermilov.books.domain.Book;
@@ -19,37 +14,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class BookDtoService {
-    private final BookReactDao bookReactDao;
-    private final BookCommentReactDao bookCommentReactDao;
+public class BookDtoTransform {
     private final AuthorDao authorDao;
     private final GenreDao genreDao;
 
-    @Transactional(readOnly=true)
-    public Flux<BookDto> findAll() {
-        return bookReactDao.findAll().map(this::getBookDto);
-    }
-
-    @Transactional(readOnly=true)
-    public Mono<BookDto> findById(String id) {
-        return bookReactDao.findById(id).map(this::getBookDto);
-    }
-
-    @Transactional
-    public Mono<BookDto> save(BookDto bookDto) {
-        return bookReactDao.save(getBook(bookDto)).map(this::getBookDto);
-    }
-
-    @Transactional
-    public Mono<Void> deleteById(String id) {
-        return bookReactDao.deleteById(id);
-    }
-
     private Genre saveGenre(String genreName) {
         Optional<Genre> byName = genreDao.getByName(genreName);
-        if (!byName.isEmpty()) {
+        if (byName.isPresent()) {
             return byName.get();
         }
 
@@ -58,13 +31,13 @@ public class BookDtoService {
 
     private Author saveAuthor(String authorName) {
         Optional<Author> byName = authorDao.getByName(authorName);
-        if (!byName.isEmpty()) {
+        if (byName.isPresent()) {
             return byName.get();
         }
         return authorDao.save(new Author(authorName));
     }
 
-    private Book getBook(BookDto bookDto) {
+    public Book getBook(BookDto bookDto) {
         Book book = new Book();
         book.setId(bookDto.getId());
         book.setName(bookDto.getName());
@@ -76,7 +49,7 @@ public class BookDtoService {
         return book;
     }
 
-    private BookDto getBookDto(Book book) {
+    public static BookDto getBookDto(Book book) {
         BookDto bookDto = new BookDto();
         bookDto.setId(book.getId());
         bookDto.setName(book.getName());
