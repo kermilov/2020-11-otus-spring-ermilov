@@ -2,6 +2,7 @@ package ru.otus.spring.kermilov.books.dto;
 
 import lombok.*;
 
+@Data
 @Builder
 @Getter
 @Setter

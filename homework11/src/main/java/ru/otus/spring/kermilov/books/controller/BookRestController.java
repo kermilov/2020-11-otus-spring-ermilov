@@ -39,4 +39,29 @@ public class BookRestController {
     public Mono<Void> deleteById(@PathVariable("id") String id) {
         return bookReactDao.deleteById(id);
     }
+
+    // @Bean
+    // public RouterFunction<ServerResponse> composedRoutes(BookReactDao bookReactDao, BookDtoTransform bookDtoTransform) {
+    //     return route()
+    //             .GET("/book",
+    //                     request -> ok()
+    //                             .body(bookReactDao.findAll().map(BookDtoTransform::getBookDto), BookDto.class))
+    //             .GET("/book/{id}", accept(APPLICATION_JSON),
+    //                     request -> bookReactDao.findById(request.pathVariable("id")).map(BookDtoTransform::getBookDto)
+    //                             .flatMap(book -> ok().contentType(APPLICATION_JSON).body(fromObject(book))))
+    //             .GET("/book/{id}", accept(APPLICATION_JSON),
+    //                     request -> ok().body(
+    //                             bookReactDao.findById(request.pathVariable("id")).map(BookDtoTransform::getBookDto),
+    //                             BookDto.class))
+    //             .POST("/book", accept(APPLICATION_JSON),
+    //                     request -> request.body(toMono(BookDto.class))
+    //                             .doOnNext(bookDto -> bookReactDao.save(bookDtoTransform.getBook(bookDto)))
+    //                             .then(ok().build()))
+    //             .DELETE("/book/{id}",
+    //                     request -> ok().body(
+    //                             bookReactDao.deleteById(request.pathVariable("id")),
+    //                             BookDto.class))
+    //             .build();
+    // }
+
 }
