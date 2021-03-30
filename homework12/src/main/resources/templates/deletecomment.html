@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Delete book comment</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Book Comment deleteion -->
+<form id="deletecomment-form" th:action="@{/comment/delete(id=${bookcomment.id})}" th:method="post" action="deletecomment.html">
+    <h1>Book Comment:</h1>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" readonly="readonly" th:value="${bookcomment.id}" value="1"/>
+    </div>
+
+    <div class="row" style="display: none;">
+        <label for="bookId-input">Book ID:</label>
+        <input id="bookId-input" name="bookId" type="text" readonly="readonly" th:value="${bookcomment.bookId}" value="Test Book ID"/>
+    </div>
+
+    <div class="row">
+        <label for="book-input">Book:</label>
+        <input id="book-input" name="book" type="text" readonly="readonly" th:value="${bookcomment.book}" value="Test Book"/>
+    </div>
+
+    <div class="row">
+        <label for="comment-input">Comment:</label>
+        <input id="comment-input" name="comment" type="text" readonly="readonly" th:value="${bookcomment.comment}" value="Test Comment"/>
+    </div>
+
+    <div class="row">
+        <button type="submit">Delete</button>
+    </div>
+</form>
+
+</body>
+</html>

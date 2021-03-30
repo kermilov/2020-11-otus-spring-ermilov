@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Comments</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .bookcomments, .bookcomments td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<form id="tablecomment-form" th:action="@{/comment/insert(id=${bookId})}" th:method="post" action="editcomment.html">
+<h1 th:text="${bookName} + ' Comments:'">Book Comments:</h1>
+<table class="bookcomments">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Comment</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="bookcomment : ${bookcomments}">
+        <td th:text="${bookcomment.id}">1</td>
+        <td th:text="${bookcomment.comment}">Test Comment</td>
+        <td>
+            <a th:href="@{/comment/edit(id=${bookcomment.id})}" href="editcomment.html">Edit</a>
+        </td>
+        <td>
+            <a th:href="@{/comment/delete(id=${bookcomment.id})}" href="deletecomment.html">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="row">
+    <button type="submit">Insert</button>
+</div>
+
+</form>
+
+</body>
+</html>
