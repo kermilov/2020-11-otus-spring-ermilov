@@ -3,6 +3,7 @@ package ru.otus.spring.kermilov.books.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class BookCommentDtoService {
     private final BookCommentAclService bookCommentDao;
 
     @Transactional(readOnly=true)
+    @PostFilter("hasPermission(filterObject, 'ADMINISTRATION')")
     public List<BookCommentDto> getByBookId(long id) {
         return bookCommentDao.getByBookId(id).stream().map(this::getBookCommentDto).collect(Collectors.toList());
     }

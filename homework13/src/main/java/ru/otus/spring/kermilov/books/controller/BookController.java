@@ -1,6 +1,7 @@
 package ru.otus.spring.kermilov.books.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import ru.otus.spring.kermilov.books.service.BookDtoService;
 
 @Controller
 @RequiredArgsConstructor
+@Secured({"ROLE_ADMIN", "ROLE_USER"})
 public class BookController {
     private final BookDtoService bookDtoService;
     private final AuthorDao authorDao;
