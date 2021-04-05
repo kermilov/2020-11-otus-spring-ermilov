@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.domain.PrincipalSid;
@@ -41,7 +42,7 @@ public class BookCommentAclServiceImpl implements BookCommentAclService {
 
     @Override
     public Optional<BookComment> findById(Long id) {
-        return isGranted(id) ? bookCommentDao.findById(id) : Optional.empty();
+        return bookCommentDao.findById(id);
     }
 
     @Override
