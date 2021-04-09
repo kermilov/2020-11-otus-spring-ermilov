@@ -1,0 +1,37 @@
+
+spring:
+  shell:
+    interactive:
+      enabled: true
+  batch:
+    job:
+      enabled: false
+  datasource:
+    url: jdbc:h2:mem:kermilov:bookdb
+    initialization-mode: always
+    show-sql: true
+  jpa:
+    show-sql: true
+    generate-ddl: false
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: none
+  h2:
+    console:
+      path: /h2-console
+      settings:
+        web-allow-others: true
+      enabled: true
+  data:
+    mongodb:
+      #uri: mongodb://localhost
+      host: localhost
+      port: 0
+      database: bookdb
+
+mongock:
+  runner-type: InitializingBean
+  change-logs-scan-package:
+    - ru.otus.spring.kermilov.migratebooks.mongock.changelog
