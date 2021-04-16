@@ -1,0 +1,22 @@
+package ru.otus.spring.kermilov.migratebooks.domain;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
+import javax.persistence.*;
+
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "Authors") // Задает имя таблицы, на которую будет отображаться сущность
+public class AuthorJpa {
+    @Id // Позволяет указать какое поле является идентификатором
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Стратегия генерации идентификаторов
+    private long id;
+    @Column(name = "name", nullable = false, unique = true)
+    private String name;
+}
