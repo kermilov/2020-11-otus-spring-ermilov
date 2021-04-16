@@ -7,17 +7,8 @@ import javax.persistence.EntityManagerFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.ChunkListener;
-import org.springframework.batch.core.ItemProcessListener;
-import org.springframework.batch.core.ItemReadListener;
-import org.springframework.batch.core.ItemWriteListener;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobExecutionListener;
-import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.*;
+import org.springframework.batch.core.configuration.annotation.*;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.item.ItemProcessor;
@@ -107,19 +98,7 @@ public class ImportBookJobConfig {
                 .reader(reader)
                 .processor(itemProcessor)
                 .writer(writer)
-                .listener(new ItemReadListener<BookMongo>() {
-                    public void beforeRead() {
-                        logger.info("Начало чтения");
-                    }
-
-                    public void afterRead(BookMongo o) {
-                        logger.info("Конец чтения");
-                    }
-
-                    public void onReadError(Exception e) {
-                        logger.info("Ошибка чтения");
-                    }
-                })
+                .listener(new ItemReadListenerDefaultImpl<BookMongo>())
                 .listener(new ItemWriteListener<BookJpa>() {
                     public void beforeWrite(List list) {
                         logger.info("Начало записи");
