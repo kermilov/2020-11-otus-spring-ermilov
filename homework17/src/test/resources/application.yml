@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:kermilov:bookdb
+    initialization-mode: always
+    show-sql: true
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: none
+mongock:
+  runner-type: InitializingBean
+  change-logs-scan-package:
+    - ru.otus.spring.kermilov.books.mongock.changelog
