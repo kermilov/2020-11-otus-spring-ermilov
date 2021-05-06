@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Comments</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .bookcomments, .bookcomments td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+    </style>
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+<form id="comment-table">
+<h1></h1>
+<table class="bookcomments">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Comment</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<script type="text/javascript" src="/js/comment-table.js"></script>
+<script>
+    $("#comment-table").ready(function() {
+        fillForm('[[${bookId}]]');
+    });
+
+    $("#comment-table").submit(function(event) {
+        event.preventDefault();
+        doAction('[[${bookId}]]');
+    });
+</script>
+
+<div class="row">
+    <button type="submit">Insert</button>
+</div>
+
+</form>
+
+</body>
+</html>

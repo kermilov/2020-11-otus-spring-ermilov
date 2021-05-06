@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all books</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .books, .books td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+    </style>
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<form id="table-book">
+
+<body>
+<h1>Books:</h1>
+
+<table class="books">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Author</th>
+        <th>Genres</th>
+        <th>Comments</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<script type="text/javascript" src="/js/book-table.js"></script>
+<script>
+    $("#table-book").ready(function() {
+        fillForm();
+    });
+
+    $("#table-book").submit(function(event) {
+        event.preventDefault();
+        doAction();
+    });
+</script>
+
+<div class="row">
+    <button type="submit">Insert</button>
+</div>
+
+</form>
+</html>
